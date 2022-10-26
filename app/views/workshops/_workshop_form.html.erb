@@ -1,0 +1,366 @@
+
+<%= form_with model: @workshop, class: 'form-atelier form-DIY section-content', id: "form-atelier" , local: true do |form| %> 
+  <%= form.hidden_field :creator_id, value: @creator.id %>
+  <% if @workshop.statut == "Brouillon"%>
+  <h2>Modifier mon Brouillon</h2>
+  <% elsif @workshop.statut == "Validé"%>
+  <h2>Modifier mon Atelier</h2>
+  <% else %>
+  <h2>Soumettre un atelier</h2>
+  <% end%>
+  <% if @workshop.errors.any? %>
+    <h4>Les erreurs suivantes empêchent la soumission de votre atelier: </h4>
+    <ul>
+      <% @workshop.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <%end%>
+  
+  <div class="flex">
+    <%# Colonne de gauche  %>
+    <div class="colonne">
+
+      <div class="line line-titre">
+        
+        <label for="input-titre"><h3 class="souligne">Titre&nbsp;:</h3></label>
+        <%= form.text_field :title, :class => 'titre', :id => 'input-titre' %>
+      </div>
+
+      <div class="bloc">
+        <h3 class="souligne droite">
+          Objectif
+          <a href="#" class="infobulle">
+            <div class="picto">i</div>
+            <span>En une phrase. Exemple : Initiation à la fabrication de produits de soins à partir d’ingrédients simples et naturels à travers deux produits : un baume nourrissant multi-usage et un dentifrice.</span>
+          </a>
+        </h3>
+        <%= form.text_area :goal, :class => 'textarea', :id => 'objectif' %>
+      </div>
+
+      <div class="bloc bloc-description">
+        <h3 class="souligne droite">
+          Description
+          <a href="#" class="infobulle">
+            <div class="picto">i</div>
+            <span>Une centaine de mots. Exemple : Vous désirez débuter en cosmétique home-made, faire un geste quotidien respectueux de l’environnement ou tout simplement vous faire plaisir ? Dans cet atelier, vous apprendrez les bases pour réaliser deux produits essentiels à toutes les trousses de toilette. Je vous présenterai les différents ingrédients et vous donnerai toutes les clés pour réaliser et adapter ces deux produits à vos besoins. Vous repartirez avec vos produits selon votre propre formule et de précieux conseils pour continuer à fabriquer chez vous. </span>
+          </a>
+        </h3>
+        <%= form.text_area :description, :class => 'textarea', :id => 'description' %>
+      </div>
+
+      <div class="bloc">
+        <h3 class="souligne droite">
+          En savoir plus
+          <a href="#" class="infobulle">
+            <div class="picto">i</div>
+            <span>Toutes informations utiles au bon déroulement de l'atelier. Exemple : à partir de 14 ans (les mineurs doivent être accompagnés d’un adulte) / Matériel fourni / Nombre de places limitées à 6 personnes / Port du masque obligatoire / Nombre de participants minimum pour que l'atelier puisse avoir lieu : 2 / L'atelier ayant lieu en extérieur, il pourra être annulé si la météo n'est pas favorable
+            </span>
+          </a>
+        </h3>
+        <%= form.text_area :more, :class => 'textarea', :id => 'savoirplus' %>
+      </div> 
+
+      <div class="bloc bloc-quand">
+        <h3 class="souligne droite">Quand ?</h3>
+        <div class="line line-duree">
+          <%= form.fields_for :workshop_duration do |f|%>
+            <label for="input-titre">Durée:</label>
+            <div class="select-container">
+              <%= f.select :hours, [['h', nil], 0, 1, 2, 3, 4]%>
+            </div>
+            <div class="select-container">
+              <%= f.select :minutes, [['min', 0], 0, 15, 30, 45]%>
+            </div>
+          <%end%>
+        </div>
+    
+        <div class="">
+      
+           <label for="input-titre">Dates des ateliers:</label>
+           <%= form.fields_for :workshop_events do |workshop_event_form|%> 
+              <% if workshop_event_form.object.start_time >= Time.now && workshop_event_form.object.cancelable? == true %>
+                  <%= render "workshop_event_fields", f: workshop_event_form %>
+              <% end %>
+            <%end %>
+        
+        </div>
+          <%= link_to_add_fields " ajouter une date".html_safe, form, :workshop_events %>
+      </div>  
+
+      <div class="bloc bloc-tarif">
+        <h3 class="souligne droite">
+          Tarifs
+          <a href="#" class="infobulle">
+            <div class="picto">i</div>
+            <span>merci d’indiquer ici vos différents tarifs qui seront affichés sur le site (incluant la commission). Si vous souhaitez que l’atelier reste en ligne sans date spécifique afin que les clients puissent acheter une carte cadeau pour l’atelier, merci de cocher la case “atelier offrable”. Si la case n’est pas cochée et que l’atelier comporte une date passée, il ne sera plus visible dans la liste des ateliers. 
+            </span>
+          </a>
+        </h3>
+        <p>
+          <div class="line line-tarif">
+            <label for="input-titre">Atelier offrable ?</label>
+            <%= form.check_box :giftable %>
+          </div>      
+        </p>
+        <div class="line line-tarif">
+          <label for="input-titre">Nombre total de places pour l’atelier&nbsp;:</label>
+          <div class="select-container">
+            <%= form.select :seats, [['0', nil], '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '20', '30']%> 
+          </div>
+        </div>
+        <%= form.fields_for :workshop_prices do |workshop_price_form|%>
+          <%= render "workshop_price_fields", f: workshop_price_form %>
+        <%end%>
+        <%= link_to_add_fields " ajouter un tarif".html_safe, form, :workshop_prices %>
+      </div>
+          
+    </div>
+
+    <div class="colonne">
+      <div class="bloc">
+        <h3 class="souligne droite">Catégorie
+          <a href="#" class="infobulle">
+            <div class="picto">i</div>
+            <span>Vous pouvez cocher une catégorie</span>
+          </a>
+        </h3>
+        <ul class="filtres">
+          <%@categories.each do |categorie|%>
+            <li style="color: <%= categorie.color%>;" class="cat-nature"><%= form.radio_button :category_id, categorie.id %><%= form.label :category_id, "#{categorie.name}", :value => categorie.id%></li>
+          <%end%>
+        </ul>
+      </div>
+
+      <div class="bloc">
+        <h3 class="souligne droite">
+          Pour qui ?
+          <a href="#" class="infobulle">
+            <div class="picto">i</div>
+            <span>Merci d’indiquer si l’atelier est accessible aux adultes, aux enfants ou en duo Adulte et enfant. Pour les ateliers adultes accessibles aux adolescents à partir de 14-15 ans, merci d’indiquer “Adulte”. Vous pourrez indiquer l’âge minimum de votre atelier dans l’encart “en savoir plus”.</span>
+          </a>
+        </h3>
+        <ul class="destinataire">
+          <li class="tous"><%= form.radio_button :audience, 'adult'%><%= form.label :audience, 'Adulte', :value => 'adult'%></li>
+          <li class="tous"><%= form.radio_button :audience, 'child'%><%= form.label :audience, 'Enfant', :value => 'child'%></li>
+          <li class="tous"><%= form.radio_button :audience, 'adult_and_child'%><%= form.label :audience, 'Adulte + enfant', :value => 'adult_and_child'%></li>
+        </ul>
+      </div>
+      
+      <%# ici bloc photos %>
+      <div class="bloc bloc-photos">
+        <h3 class="souligne droite">Photos
+          <a href="#" class="infobulle">
+            <div class="picto">i</div>
+            <span>Merci de choisir au minimum 1 photo pour illustrer l'atelier. Vous pouvez en choisir jusqu'à 3. Le format paysage est recommandé pour la galerie. Merci de faire attention à l’esthétique de vos photos (lumière, netteté, cadre, ... ) afin de faire ressortir votre atelier. 
+            </span>
+          </a>
+        </h3>
+        <p> 3 photos au format paysage 2:3 - 5Mo max par photo - le crop est automatique pour les photos 2 et 3</p>
+
+        <div class="field" data-controller='instant-upload cropper'
+          data-cropper-model-value='workshop'>
+              <label class="btn-cta workshop-main-picture-btn">
+         Photo principale
+         <span class="workshop_picture_form">
+              <%= form.file_field :main_picture, 'data-instant-upload-target': 'input2',
+              'data-action': 'instant-upload#changed', :class => 'btn-cta ', onchange: "validateFiles(this);",
+    data: { max_file_size: 5.megabytes }%>
+              </span>
+        </label> 
+      
+          <%= image_tag @workshop.main_picture.variant(resize_to_limit: [300, 200]),
+              width: 300, height: 200,
+              'data-instant-upload-target': 'image',
+              'data-cropper-target': 'image',
+              'data-action': 'instant-uploaded->cropper#changed' if @workshop.main_picture.attached? %>
+          <div class="workshop-form-preview-pic-placeholder">
+            <%= content_tag :img, nil, src: nil, width: 300, height: 200,
+                'data-instant-upload-target': 'image',
+                'data-cropper-target': 'image',
+                'data-action': 'instant-uploaded->cropper#changed' unless @workshop.main_picture.attached? %>
+          </div>
+        </div>
+<label class="workshop_pictures_form_label" >
+         Autres photos:
+         </label>
+          <span>
+            <%# <%= form.file_field :pictures, multiple: true  %>
+            <%= form.file_field :pictures, multiple: true, :class => "btn-cta", onchange: "validateFiles(this);", data: { max_file_size: 2.megabytes } %> 
+          </span>
+      </div>
+        
+      <div class="bloc">
+        <h3 class="souligne droite">Le lieu
+          <a href="#" class="infobulle">
+            <div class="picto">i</div>
+            <span>Merci de choisir votre zone. La zone comprend les villes et villages en périphérie. S’il s’agit d’un atelier en ligne, merci d’indiquer si cet atelier comporte un kit à envoyer au préalable ou pas. Si vous avez optez pour le click & collect, merci d’indiquer l’adresse de retrait. 
+               Pour les ateliers en présentiel, vous pouvez simplement indiquer l’adresse où aura lieu l’atelier. 
+            </span>
+          </a>
+        </h3>
+        <div class="line">
+          <label for="input-titre">Zone&nbsp;:</label>
+          <div class="select-container">
+            <%= form.collection_select :zone_id, Zone.all, :id, :name %> 
+          </div>
+        </div>
+        <div class="line line-tarif">
+          <label for="input-titre">Atelier en ligne ?</label>
+          <%= form.check_box :online, :id => 'workshop_online_checkbox'%>
+        </div> 
+        
+        <div id="workshop_address_fields" >
+          <%= form.fields_for :address do |fff|%>
+            <div class="line ">
+              <label for="input-montant">Adresse&nbsp;:</label>
+              <%= fff.text_field :street %> 
+            </div>
+            <br>
+            <div class="line ">
+              <label for="input-montant">CP&nbsp;:</label>
+              <%= fff.text_field :postal_code %>
+              <label for="input-montant">Ville&nbsp;:</label>
+              <%= fff.text_field :city, id: "input_city"%>
+            </div>
+          <%end%>
+        </div>
+        </div>
+      </div>
+    </div>
+  
+      <div class="btn-container">
+      <ul class="flex">
+        <% if @workshop.statut == 'Brouillon'%>
+          <li><%= link_to 'Annuler', "/workshops/index_creator/'#{@creator.id}'", data: {confirm: 'Etes-vous sur de vouloir quitter cette page? Les elements saisies seront perdus'}, class: "btn-cta" %></li>
+          <li><%= form.submit 'Soumettre mon brouillon', class: "btn-cta" %>
+          <li><%= form.submit 'Mettre à jour mon brouillon', class: "btn-cta" %>
+        <%elsif @workshop.statut == "Soumis" && @workshop.title.present? %>
+          <li><%= link_to 'Annuler', "/workshops/index_creator/'#{@creator.id}'", data: {confirm: 'Etes-vous sur de vouloir quitter cette page? Les elements saisies seront perdus'}, class: "btn-cta" %></li>
+          <li><button class="btn-cta">Publier&nbsp;*</button></li>  
+        <%elsif @workshop.statut == "Validé" %>
+           <li><%= link_to 'Annuler', "/workshops/index_creator/'#{@creator.id}'", data: {confirm: 'Etes-vous sur de vouloir quitter cette page? Les elements saisies seront perdus'}, class: "btn-cta" %></li>
+           <li><button class="btn-cta">Publier&nbsp;*</button></li>  
+        <%else%>
+          <li><%= link_to 'Annuler', "/workshops/index_creator/'#{@creator.id}'", data: {confirm: 'Etes-vous sur de vouloir quitter cette page? Les elements saisies seront perdus'}, class: "btn-cta" %></li>
+          <li><%= form.submit 'Enregistrer en tant que brouillon', class: "btn-cta" %>
+          <li><button class="btn-cta">Publier&nbsp;*</button></li>  
+        <%end%>  
+      </ul>
+      <p>* L’atelier sera publié après validation par l’administrateur</p>
+    </div>      
+  <%end%>
+
+<script>
+  $('select#zones_to_check').bind('change', function() {
+  $('.tous2').hide();
+  $('.tous2 input').attr('disabled', true);
+  var selection = $(this).val();
+  $('#' + selection).show();
+  $('#' + selection + ' input').attr('disabled', false);
+}).change();
+
+var checkbox = document.getElementById('workshop_online_checkbox');
+var details_div = document.getElementById('workshop_address_fields');
+var input_city = document.getElementById('input_city');
+
+checkbox.addEventListener("click",function() {
+    if(this.checked) {
+      details_div.style['display'] = 'none';
+      input_city.setAttribute("value", "Online");
+    } else {
+      details_div.style['display'] = 'block';
+      input_city.setAttribute("value", "");
+    }
+ });
+
+// var cancel_btn = document.getElementById('btn-annuler-workshop-form');
+// var draft_btn = document.getElementById('btn-draft-workshop-form')
+// var creator_id = document.getElementById('mycontainer').dataset.source
+ 
+// cancel_btn.addEventListener("click",function() {
+//    window.location.href = "/workshops/index_creator/"+creator_id;
+//  });
+
+// draft_btn.addEventListener("click",function() {
+//   window.location.href = "/workshops/index_creator/"+creator_id;
+// });
+
+
+// remove fields
+
+// app/javascript/packs/nested-forms/removeFields.js
+class removeFields {
+    // This executes when the function is instantiated.
+    constructor() {
+      this.iterateLinks()
+    }
+  
+    iterateLinks() {
+      // Use event delegation to ensure any fields added after the page loads are captured.
+      document.addEventListener('click', e => {
+        if (e.target && e.target.className == 'remove_fields') {
+          this.handleClick(e.target, e)
+        }
+      })
+    }
+  
+    handleClick(link, e) {
+      // Stop the function from executing if a link or event were not passed into the function.
+      console.log('coucou'+link+e);
+      if (!link || !e) return
+      // Prevent the browser from following the URL.
+      e.preventDefault()
+      // Find the parent wrapper for the set of nested fields.
+      let fieldParent = link.closest('.nested-fields')
+      console.log(fieldParent);
+      // If there is a parent wrapper, find the hidden delete field.
+      let deleteField = fieldParent
+        ? fieldParent.querySelector('input[type="hidden"]')
+        : null
+      // If there is a delete field, update the value to `1` and hide the corresponding nested fields.
+      if (deleteField) {
+        deleteField.value = 1
+        fieldParent.style.display = 'none'
+      }
+    }
+  }
+  
+  // Wait for turbolinks to load, otherwise `document.querySelectorAll()` won't work
+  window.addEventListener('turbolinks:load', () => new removeFields())
+
+  
+
+  
+  $(document).on('page:change', function () {
+    $('.datepicker').datepicker();
+  });
+
+  function validateFiles(inputFile) {
+  var maxExceededMessage = "Votre photo depasse le poid maximum autorisé (5 MB)";
+  var extErrorMessage = "Uniquement les images avec les extensions suivante sont autorisées: .jpg, .jpeg, .gif or .png is allowed";
+  var allowedExtension = ["jpg", "jpeg", "gif", "png"];
+
+  var extName;
+  var maxFileSize = $(inputFile).data('max-file-size');
+  var sizeExceeded = false;
+  var extError = false;
+
+  $.each(inputFile.files, function() {
+    if (this.size && maxFileSize && this.size > parseInt(maxFileSize)) {sizeExceeded=true;};
+    extName = this.name.split('.').pop();
+    if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
+  });
+  if (sizeExceeded) {
+    window.alert(maxExceededMessage);
+    $(inputFile).val('');
+  };
+
+  if (extError) {
+    window.alert(extErrorMessage);
+    $(inputFile).val('');
+  };
+}
+
+
+</script>

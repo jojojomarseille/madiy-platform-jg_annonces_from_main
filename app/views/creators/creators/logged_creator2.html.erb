@@ -1,0 +1,261 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Mon compte createur </h1>
+  </div>
+</section>
+
+<section class="section-titre section-padding">
+  <div class="section-content">
+    <header>
+      <h4>Retrouvez ici tous vos ateliers et gérez les informations de votre profil</h4>
+    </header>
+  </div>
+</section>
+
+<section class="section-double-bouton section-logged section-padding">
+  <div class="section-content">
+	<div class="header flex">
+      <div class="button-no-js button-atelier " data-bloc="bloc-ateliers" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mes ateliers", "/workshops/index_creator/'#{current_creator.id}'" , data: { target: "link.link" } %>
+        </h4>
+      </div>
+
+      <div class="button-no-js button-profil selected" data-bloc="bloc-profil" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mon profil", '/creator/logged-creator2/', data: { target: "link.link" } %>
+        </h4>
+      </div>
+	</div>
+	<div class="content">
+	  <div class="bloc bloc-profil current">
+		<%= render 'creators/form'%>
+		<h4>Mes documents &nbsp;:</h4>
+		<div class="bloc-docs">
+            <%# carte id%>
+			<div class="line">
+			  <label for="input-mdp1" style="font-weight: 800">Ma piéce d'identité: 
+			  </label>
+			  <%= form_with model: @creator_doc, class: "form-profil form-DIY" do |form| %>
+				<%form.hidden_field :creator_id, value: current_creator.id %>
+				<%= form.hidden_field :statut, value: "soumis"%>
+				<%= form.hidden_field :document_type, value: "Piéce d'identitée"%>
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%= form.file_field :document, :class => "btn-cta" %>
+			  <%= form.submit 'Envoyer', class: "btn-cta"%>
+			  <% end %>
+			</div>
+			<% if @creator.creator_docs.where(document_type: "Piéce d'identitée", statut: "soumis") %>
+			<p class="messageErreur" id="messageErreur">  Vos document sont en cours d'examens.</p>
+			<% elsif @creator.creator_docs.where(document_type: "Piéce d'identitée", statut: "validé") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été validés. Félicitation! Vous étes à jour.</p>
+			<% elsif @creator.creator_docs.where(document_type: "Piéce d'identitée", statut: "rejeté") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été rejeté, merci d'uploader un nouveau document</p>
+			<% else  %>
+			<p class="messageErreur" id="messageErreur">  Vous n'avez pas encore soumis ce document</p>
+			<% end %>
+		</div>
+
+		<div class="bloc-docs">
+            <%# iban%>
+			<div class="line">
+			  <label for="input-mdp1" style="font-weight: 800">Mon Iban: 
+			  </label>
+			  <%= form_with model: @creator_doc, class: "form-profil form-DIY" do |form| %>
+				<%form.hidden_field :creator_id, value: current_creator.id %>
+				<%= form.hidden_field :statut, value: "soumis"%>
+				<%= form.hidden_field :document_type, value: "IBAN"%>
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%= form.file_field :document, :class => "btn-cta" %>
+			  <%= form.submit 'Envoyer', class: "btn-cta"%>
+			  <% end %>
+			</div>
+			<% if @creator.creator_docs.where(document_type: "IBAN", statut: "soumis") %>
+			<p class="messageErreur" id="messageErreur">  Vos document sont en cours d'examens.</p>
+			<% elsif @creator.creator_docs.where(document_type: "IBAN", statut: "validé") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été validés. Félicitation! Vous étes à jour.</p>
+			<% elsif @creator.creator_docs.where(document_type: "IBAN", statut: "rejeté") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été rejeté, merci d'uploader un nouveau document</p>
+			<% else  %>
+			<p class="messageErreur" id="messageErreur">  Vous n'avez pas encore soumis ce document</p>
+			<% end %>
+		</div>
+
+		
+<% if @creator.legal_statut == "société"%>
+		<div class="bloc-docs">
+            <%# Preuve enregistrement société%>
+			<div class="line">
+			  <label for="input-mdp1" style="font-weight: 800">Preuve d'enregistrement: 
+			    <a href="#" class="infobulle">
+                  <div class="picto">i</div>
+                  <span>Extrait Kbis de moins de 3 mois</span>
+                </a>
+			  </label>
+			  <%= form_with model: @creator_doc, class: "form-profil form-DIY" do |form| %>
+				<%form.hidden_field :creator_id, value: current_creator.id %>
+				<%= form.hidden_field :statut, value: "soumis"%>
+				<%= form.hidden_field :document_type, value: "Preuve d'enregistrement société"%>
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%= form.file_field :document, :class => "btn-cta" %>
+			  <%= form.submit 'Envoyer', class: "btn-cta"%>
+			  <% end %>
+			</div>
+			<% if @creator.creator_docs.where(document_type: "Preuve d'enregistrement société", statut: "soumis") %>
+			<p class="messageErreur" id="messageErreur">  Vos document sont en cours d'examens.</p>
+			<% elsif @creator.creator_docs.where(document_type: "Preuve d'enregistrement société", statut: "validé") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été validés. Félicitation! Vous étes à jour.</p>
+			<% elsif @creator.creator_docs.where(document_type: "Preuve d'enregistrement société", statut: "rejeté") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été rejeté, merci d'uploader un nouveau document</p>
+			<% else  %>
+			<p class="messageErreur" id="messageErreur">  Vous n'avez pas encore soumis ce document</p>
+			<% end %>
+		</div>
+
+		<div class="bloc-docs">
+            <%# statuts%>
+			<div class="line">
+			  <label for="input-mdp1" style="font-weight: 800">Statuts complets, à jour et signés : 
+			  </label>
+			  <%= form_with model: @creator_doc, class: "form-profil form-DIY" do |form| %>
+				<%form.hidden_field :creator_id, value: current_creator.id %>
+				<%= form.hidden_field :statut, value: "soumis"%>
+				<%= form.hidden_field :document_type, value: "Statuts"%>
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%= form.file_field :document, :class => "btn-cta" %>
+			  <%= form.submit 'Envoyer', class: "btn-cta"%>
+			  <% end %>
+			</div>
+			<% if @creator.creator_docs.where(document_type: "Statuts", statut: "soumis") %>
+			<p class="messageErreur" id="messageErreur">  Vos document sont en cours d'examens.</p>
+			<% elsif @creator.creator_docs.where(document_type: "Statuts", statut: "validé") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été validés. Félicitation! Vous étes à jour.</p>
+			<% elsif @creator.creator_docs.where(document_type: "Statuts", statut: "rejeté") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été rejeté, merci d'uploader un nouveau document</p>
+			<% else  %>
+			<p class="messageErreur" id="messageErreur">  Vous n'avez pas encore soumis ce document</p>
+			<% end %>
+		</div>
+
+		<div class="bloc-docs">
+            <%# beneficiaires effectifs%>
+			<div class="line">
+			  <label for="input-mdp1" style="font-weight: 800">Déclaration bénéficiaires effectifs :
+			  <a href="#" class="infobulle">
+                  <div class="picto">i</div>
+                  <span>si plusieurs personnes détiennent plus de 25% des parts de la société, les noms, prénoms, date et lieu de naissance et adresse de ces personnes.</span>
+                </a>
+			  </label>
+			  <%= form_with model: @creator_doc, class: "form-profil form-DIY" do |form| %>
+				<%form.hidden_field :creator_id, value: current_creator.id %>
+				<%= form.hidden_field :statut, value: "soumis"%>
+				<%= form.hidden_field :document_type, value: "Bénéficiaires effectifs"%>
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%= form.file_field :document, :class => "btn-cta" %>
+			  <%= form.submit 'Envoyer', class: "btn-cta"%>
+			  <% end %>
+			</div>
+			<% if @creator.creator_docs.where(document_type: "Bénéficiaires effectifs", statut: "soumis") %>
+			<p class="messageErreur" id="messageErreur">  Vos document sont en cours d'examens.</p>
+			<% elsif @creator.creator_docs.where(document_type: "Bénéficiaires effectifs", statut: "validé") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été validés. Félicitation! Vous étes à jour.</p>
+			<% elsif @creator.creator_docs.where(document_type: "Bénéficiaires effectifs", statut: "rejeté") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été rejeté, merci d'uploader un nouveau document</p>
+			<% else  %>
+			<p class="messageErreur" id="messageErreur">  Vous n'avez pas encore soumis ce document</p>
+			<% end %>
+		</div>
+		<% else%>
+		<div class="bloc-docs">
+            <%# Preuve enregistrement auto ent%>
+			<div class="line">
+			  <label for="input-mdp1" style="font-weight: 800">Preuve d'enregistrement de moins de 3 mois: 
+			    <a href="#" class="infobulle">
+                  <div class="picto">i</div>
+                  <span>Extrait Kbis commerçant personne physique, Déclaration de soumission au statut auto-entrepreneur, Déclaration URSAFF, Avis SIRENE…</span>
+                </a>
+			  </label>
+			  <%= form_with model: @creator_doc, class: "form-profil form-DIY" do |form| %>
+				<%form.hidden_field :creator_id, value: current_creator.id %>
+				<%= form.hidden_field :statut, value: "soumis"%>
+				<%= form.hidden_field :document_type, value: "Preuve d'enregistrement auto-entreprise"%>
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%= form.file_field :document, :class => "btn-cta" %>
+			  <%= form.submit 'Envoyer', class: "btn-cta"%>
+			  <% end %>
+			</div>
+			<% if @creator.creator_docs.where(document_type: "Preuve d'enregistrement auto-entreprise", statut: "soumis") %>
+			<p class="messageErreur" id="messageErreur">  Vos document sont en cours d'examens.</p>
+			<% elsif @creator.creator_docs.where(document_type: "Preuve d'enregistrement auto-entreprise", statut: "validé") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été validés. Félicitation! Vous étes à jour.</p>
+			<% elsif @creator.creator_docs.where(document_type: "Preuve d'enregistrement auto-entreprise", statut: "rejeté") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été rejeté, merci d'uploader un nouveau document</p>
+			<% else  %>
+			<p class="messageErreur" id="messageErreur">  Vous n'avez pas encore soumis ce document</p>
+			<% end %>
+		</div>
+        <%end%>
+		<div class="bloc-docs">
+            <%# cgu cgv%>
+			<div class="line">
+			  <label for="input-mdp1" style="font-weight: 800">CGU - CGV :
+			  <a href="#" class="infobulle">
+                  <div class="picto">i</div>
+                  <span>Merci de télécharger ici la dernière version pdf des CGV-CGU et de les renvoyer signé via le formulaire suivant.</span>
+                </a>
+			  </label>
+			  
+			  <%= form_with model: @creator_doc, class: "form-profil form-DIY" do |form| %>
+				<%form.hidden_field :creator_id, value: current_creator.id %>
+				<%= form.hidden_field :statut, value: "soumis"%>
+				<%= form.hidden_field :document_type, value: "CGU-CGV"%>
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%= form.file_field :document, :class => "btn-cta" %>
+			  <%= form.submit 'Envoyer', class: "btn-cta"%>
+			  <% end %>
+			</div>
+			<% if @creator.creator_docs.where(document_type: "CGU-CGV", statut: "soumis") %>
+			<p class="messageErreur" id="messageErreur">  Vos document sont en cours d'examens.</p>
+			<% elsif @creator.creator_docs.where(document_type: "CGU-CGV", statut: "validé") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été validés. Félicitation! Vous étes à jour.</p>
+			<% elsif @creator.creator_docs.where(document_type: "CGU-CGV", statut: "rejeté") %>
+			<p class="messageErreur" id="messageErreur">  Vos document ont été rejeté, merci d'uploader un nouveau document</p>
+			<% else  %>
+			<p class="messageErreur" id="messageErreur">  Vous n'avez pas encore soumis ce document</p>
+			<% end %>
+		</div>
+
+
+	  </div>
+	</div>
+  </div>
+</section>
+
+<script type="text/javascript">
+$(function() {
+	$('input[name="daterange"]').daterangepicker({
+		opens: 'left',
+		autoUpdateInput: false,
+		autoApply:true,
+		singleDatePicker:true,
+		locale: {
+			cancelLabel: 'Clear',
+			format: "DD/MM/YYYY",
+			applyLabel: "Sélectionner",
+        	cancelLabel: "Annuler",
+        	fromLabel: "De",
+	        toLabel: "à",
+	        weekLabel: "Sem",
+	        daysOfWeek: ["Di","Lu","Ma","Me","Je","Ve","Sa"],
+	        monthNames: ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
+	        firstDay:1,
+		}
+	});
+
+	$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) 
+	{
+		$(this).val(picker.startDate.format('DD/MM/YYYY'));
+		$(this).trigger('change');
+	});
+});
+</script>

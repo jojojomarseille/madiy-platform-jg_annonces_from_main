@@ -1,0 +1,20 @@
+@import "utils.scss";
+@import "config.scss";
+
+/****************************************************************************/
+/* HOME
+/****************************************************************************/
+
+.home {
+  &.body {padding-top:0;}
+  header {
+    background-color: $mainColor;
+    .masque {display:none;}
+  }
+
+  .section-newsletter {
+    .section-content, h3 {display:block;}
+    h2 {margin-bottom:1em;}
+    .form-newsletter {margin:0 auto;}
+  }
+}

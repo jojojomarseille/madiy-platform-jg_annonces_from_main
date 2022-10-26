@@ -1,0 +1,35 @@
+<%= form_with model: @voucher, html: { class: 'form-carte form-DIY' } do |f| %>
+  <div class="line">
+    <%= f.label :amount, "Montant (en €)" %>
+    <%= f.text_field :amount %>
+  </div>
+  <div class="line">
+    <%= f.label :from %>
+    <%= f.text_field :from %>
+  </div>
+  <div class="line">
+    <%= f.label :to %>
+    <%= f.text_field :to %>
+  </div>
+  <div class="line line-textarea">
+    <%= f.label :message %>
+    <%= f.text_area :message %>
+  </div>
+  <div class="line line-check">
+    <!-- <ul class="list-check">
+      <li><input type="radio" id="reception-email" name="reception" value="email"><label for="reception-email">Recevoir par email</label></li>
+      <li><input type="radio" id="reception-poste" name="reception" value="poste"><label for="reception-poste">Recevoir par la poste*</label></li>
+    </ul>
+    <p class="mentions">*Un supplément de 3,00€ sera demandé pour expédier la carte cadeau par la poste.</p> -->
+  </div>
+
+  <div class="btn-container">
+    <% if @voucher.errors.any? %>
+      <p class="messageErreur" id="messageErreur">
+        <%= @voucher.errors.full_messages.to_sentence %>
+      </p>
+    <% end %>
+
+    <%= f.submit 'Ajouter au panier', class: 'btn-submit btn-cta' %>
+  </div>
+<% end %>

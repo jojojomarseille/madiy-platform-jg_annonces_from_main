@@ -1,0 +1,153 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Carte Cadeau</title>
+<style>
+ html, body {
+  background: #fff;
+  width: 100%;
+  margin: 0;
+}
+page {
+  background: #fff;
+  display: block;
+  margin: 0 auto;
+  border: 0;
+  width:100%;
+
+}
+page[size="A4"] {
+  width: 21cm;
+  height: 29.7cm;
+}
+
+h1 {
+font-family: 'Amatic SC', cursive;
+color: #0d2131;
+font-size: 5em;
+padding: 0;
+margin: 0;
+}
+
+
+
+.container{
+  margin: -50px 0 0 0;
+  padding-left: 50px;
+  padding-right: 50px;
+font-family: 'Montserrat', sans-serif;
+color: #0d2131;
+}
+
+p {
+  font-size: 0.9em;
+}
+
+.message {
+  margin: 0 auto;
+  width: 80%;
+  padding:  20px;
+  background-color: #dbe0f4;}
+
+label{
+  border: 2px solid #0B3FC1;
+    text-align: center;
+    min-width: 100px;
+    padding: 12px 40px;
+    font-size: 1.2em;
+    letter-spacing: .3px
+}
+
+.bloc_cadeau{
+  margin: 0 auto;
+  width: 80%;
+    background: transparent url(<%= wicked_pdf_asset_base64("offrir-background.png") %>) center top repeat-y;
+    padding: 30px;
+}
+
+.bloc_cadeau_inner {
+  background-color: #fff;
+  border: 2px solid #0B3FC1;
+    color: #002134;
+        max-width: 80%;
+padding: 10px 10px 50px 10px;
+    margin: 0 auto;
+    text-align: center;}
+
+        a {color: #0B3FC1;
+      font-weight: 800;
+    text-decoration: underline;}
+
+
+@media print {
+  body, page {
+    margin: 0;
+    box-shadow: 0;
+  }
+}
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC&family=Montserrat:wght@400;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+  	<page>
+    <%= image_tag wicked_pdf_asset_base64("entete.png"), width: "100%" %>
+    <div class="container">
+
+  <h1>
+    CARTE CADEAU
+    <%= image_tag wicked_pdf_asset_base64("cadeau.png"), width: "7%" %>
+  </h1>
+  <p><span style="font-weight: 800; font-size: 1.2em;">POUR :</span> <%= @voucher.to %></p>
+  <p><span style="font-weight: 800; font-size: 1.2em;">DE LA PART DE :</span> <%= @voucher.from %></p>
+  <% if @voucher.message.present? %>
+    <p class="message">
+      <%= @voucher.message %>
+    </p>
+  <% end %>
+  <center><p><%= image_tag wicked_pdf_asset_base64("soulignement-bleu.svg"), width: "50%" %></p></center>
+
+  <center><p style="padding: 20px;"><span style="font-family: 'Amatic SC', cursive; font-size: 2em; font-weight: 700;">DÉVELOPPEZ VOTRE CRÉATIVITÉ AUPRÈS DES CRÉATEURS DE VOTRE RÉGION.</span></p></center>
+
+
+  <div class="bloc_cadeau">
+    <div class="bloc_cadeau_inner" >
+  <p><span style="font-weight: 800; font-size: 1.2em;">UN MONTANT DE :</span> <span style="color: #0B3FC1;"> <%= short_number_to_currency(@voucher.amount) %></span>
+    <p><span style="font-weight: 800; font-size: 1.2em;">Valable sur tous les ateliers !</span></p>
+  <p><span style="font-family: 'Amatic SC', cursive; font-size: 1.2em;">Votre code cadeau</span></p><label><%= @voucher.coupon_token %></label>
+  </div>
+  </div>
+
+  <center><p><%= image_tag wicked_pdf_asset_base64("soulignement-bleu.svg"), width: "50%" %></p></center>
+
+  <table width="100%" style="text-align: left;">
+    <tr>
+      <td width="60%" style="padding-right: 25px; font-size: 0.9em;">
+        <p style="font-size: 1.2em; font-weight: 800;">Comment utiliser ma carte cadeau</p>
+        <p>Pour cela, rien de plus simple :</p>
+        <ol>
+          <li>Rendez-vous sur <b><%= link_to "la page des ateliers", "https://mesateliersdiy.fr/ateliers" %> pour faire votre choix</b></li>
+          <li>Ajoutez l'atelier de votre choix au panier</b></li>
+          <li>Rentrez votre code cadeau et validez votre commande</b></li>
+        </ol>
+</td>
+      <td style="padding-left: 25px; font-size: 0.9em; text-align: center;">
+        <center><%= image_tag wicked_pdf_asset_base64("picto-ticket-bleu.svg"), width: "50%" %></center>
+        <p>Votre bon d'achat est valable <b>1 an</b> à partir de la date d’achat</p>
+
+        <p>Vous pouvez l’utiliser à tout moment en une ou plusieurs fois</p>
+
+
+      </td>
+    </tr>
+
+  </table>
+
+    </div>
+    </page>
+</body>
+</html>

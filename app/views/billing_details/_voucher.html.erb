@@ -1,0 +1,23 @@
+<tr>
+  <td>
+    <h4>
+      <% if item.cartable.workshop.present? %>
+        Bon cadeau pour l'atelier "<%= item.cartable.workshop.title %>"
+      <% else %>
+        Bon cadeau d'une valeur de <%= short_number_to_currency(Money.new(item.cartable.amount_cents)) %>
+      <% end %>
+    <h4>
+    <p class="date">
+      De la part de <%= item.cartable.from %> à l'attention de <%= item.cartable.to %>
+    </p>
+  </td>
+
+  <td class="type strong" style="text-align: right">
+    1 x
+  </td>
+  <td class="center">
+    <h4>
+      <%= short_number_to_currency(Money.new(item.cartable.amount_cents)) %>
+    </h4>
+  </td>
+</tr>

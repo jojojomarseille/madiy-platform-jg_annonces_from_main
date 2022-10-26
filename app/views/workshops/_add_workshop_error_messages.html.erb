@@ -1,0 +1,12 @@
+<% if workshop.errors.any? %>
+  <div id="error_explanation">
+    <div class="">
+      The form contains <%= pluralize(workshop.errors.count, "error") %>.
+    </div>
+    <ul>
+    <% workshop.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

@@ -1,0 +1,45 @@
+<div class="item item-atelier <%= category_css_class(workshop.category) %>">
+  <%= link_to workshop_path(workshop), class: "atelier" do %>
+    <div class="visuel">
+      <%= image_tag workshop.main_picture if workshop.main_picture.attached? %> 
+      <div class="categorie">
+        <span class="titre">
+          <%= workshop.category.name.capitalize %>
+        </span>
+
+        <% if workshop.online? %>
+          <span class="online">
+            En ligne
+          </span>
+        <% else %>
+          <span class="online">
+            <%= workshop.zone.name%>
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="content">
+      <h3><%= workshop.title %></h3>
+      <p class="mainColor">
+        <% if workshop.workshop_prices.one? %>
+          <%= short_number_to_currency workshop.workshop_prices.order(:price_cents).first.price %>
+        <% else %>
+          À partir de
+          <span>
+            <%= short_number_to_currency workshop.workshop_prices.order(:price_cents).first.price %>
+          </span>
+        <% end %>
+      </p>
+      <p>
+        <i>
+          <% if workshop.workshop_events.in_future.any? %>
+            <%= l workshop.workshop_events.in_future.order(:start_time).first.start_time, format: :event %>
+          <% else %>
+            Offrez (vous) cet atelier pour une date future
+          <% end %>
+        </i>
+      </p>
+    </div>
+  <% end %>
+</div>

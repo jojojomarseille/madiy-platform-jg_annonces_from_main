@@ -1,0 +1,8 @@
+<%# $('[data-toggle="popover"]').popover('hide');
+
+bootbox.dialog({
+  size: 'large', onEscape: true, backdrop: true,
+  title: '<h3>Ajouter une date pour cet atelier</h3>',
+  message: "<%= render partial: "display_workshop_event_form", locals: {workshop: @workshop}%>",
+  <%# className: "modal80"
+}); %>

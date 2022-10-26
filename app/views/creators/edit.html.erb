@@ -1,0 +1,215 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Mon compte createur </h1>
+  </div>
+</section>
+
+<section class="section-titre section-padding">
+  <div class="section-content">
+    <header>
+      <h4>Retrouvez ici tous vos ateliers et gérez les informations de votre profil</h4>
+    </header>
+  </div>
+</section>
+
+<section class="section-double-bouton section-logged section-padding">
+  <div class="section-content">
+	<div class="header flex">
+      <div class="button-no-js button-atelier " data-bloc="bloc-ateliers" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mes ateliers", "/workshops/index_creator/'#{current_creator.id}'" , data: { target: "link.link" } %>
+        </h4>
+      </div>
+
+      <div class="button-no-js button-profil selected" data-bloc="bloc-profil" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mon profil", '/creator/logged-creator2/', data: { target: "link.link" } %>
+        </h4>
+      </div>
+	</div>
+	<div class="content">
+	  <div class="bloc bloc-profil current">
+		<%= render 'creators/form'%>
+
+		<h3>Changement de mot de passe</h3>
+		<%= link_to "Changer mon mot de passe", edit_creator_registration_path %>
+		<br>
+		<br>
+		<br>
+
+		<h3>Mes documents</h3>
+		<% @creator.docs_list.each do |doc| %>
+			<div class="bloc-docs" style="margin-bottom: 30px">
+          <%# doc gé%>
+			<% if @creator.creator_docs.where(document_type: "#{CreatorDoc.document_types[doc]}", statut: "soumis").count == 1 %>
+			<label for="input-mdp1" style="font-weight: 800"><%=CreatorDoc.document_types[doc]%>: 
+			  </label>
+			<p class="messageErreur" id="messageErreur">  Vos document sont en cours d'examens.</p>
+			<% elsif @creator.creator_docs.where(document_type: "#{CreatorDoc.document_types[doc]}", statut: "validé").count >= 1 %>
+			<label for="input-mdp1" style="font-weight: 800"><%=CreatorDoc.document_types[doc]%>: 
+			  </label>
+			<p class="messageErreur" id="messageErreur"> Votre document à été validé. Félicitation! Vous étes à jour: <a href=<%= url_for(@creator.doc_url(doc)) %> target="_blank"> Mon document</a> </p>
+			<% elsif @creator.creator_docs.where(document_type: "#{CreatorDoc.document_types[doc]}", statut: "rejeté").count >= 1 %>
+			<label for="input-mdp1" style="font-weight: 800"><%=CreatorDoc.document_types[doc]%>: 
+			  </label>
+			  <div class="line">
+			<p class="messageErreur" id="messageErreur">  Votre <%=CreatorDoc.document_types[doc]%> n'a pas été validé, merci de l'uploader de nouveau :</p>
+			  <%= form_with model: @creator_doc, local: true, class: "form-profil form-DIY" do |form| %>
+				<%= form.hidden_field :creator_id, value: current_creator.id %>
+				<%= form.hidden_field :statut, value: "soumis"%>
+				<%= form.hidden_field :document_type, value: "#{doc}"%>
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%= form.file_field :document, :class => "btn-cta", onchange: "validateFiles(this);",
+                        data: { max_file_size: 2.megabytes } %>
+			  <%= form.submit 'Envoyer', class: "btn-cta"%>
+			  <% end %>
+			</div>
+			<% else  %>
+			<div class="line">
+			  <label for="input-mdp1" style="font-weight: 800"><%=CreatorDoc.document_types[doc]%>: 
+			  </label>
+			  <%= form_with model: @creator_doc, local: true, class: "form-profil form-DIY" do |form| %>
+				<%= form.hidden_field :creator_id, value: current_creator.id %>
+				<%= form.hidden_field :statut, value: "soumis"%>
+				<%= form.hidden_field :document_type, value: "#{doc}"%>
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%= form.file_field :document, :class => "btn-cta", onchange: "validateFiles(this);",
+                        data: { max_file_size: 2.megabytes } %>
+			  <%= form.submit 'Envoyer', class: "btn-cta"%>
+			  <% end %>
+			</div>
+			<p class="messageErreur" id="messageErreur">  Vous n'avez pas encore soumis ce document, merci d'uploader un document</p>
+			<% end %>
+		  </div>
+		<%end%>
+		
+
+
+
+	
+
+		<div class="bloc-docs" style="margin-bottom: 30px">
+			<% if @creator.creator_docs.where(document_type: "cgu", statut: "soumis").count >= 1 %>
+			<label for="input-mdp1" style="font-weight: 800">CGU - CGV :
+			  <a href="#" class="infobulle">
+                  <div class="picto">i</div>
+                  <span>Le document que vous avez uploadé est en cours d'examens..</span>
+                </a>
+			  </label>
+			<p class="messageErreur" id="messageErreur">  Le document que vous avez signé est en cours d'examens.</p>
+			<% elsif @creator.creator_docs.where(document_type: "cgu", statut: "validé").count >= 1 %>
+			<label for="input-mdp1" style="font-weight: 800">CGU - CGV :
+			  <a href="#" class="infobulle">
+                  <div class="picto">i</div>
+                  <span>Votre document est signé, il est disponible ci dessous</span>
+                </a>
+			  </label>
+			<p class="messageErreur" id="messageErreur">  Votre document à été validé. Félicitation! Vous étes à jour: <a href=<%= url_for(@creator.cgu_doc) %> target="_blank"> Mon document</a></p>
+			<% elsif @creator.creator_docs.where(document_type: "cgu", statut: "rejeté").count >= 1 %>
+			<label for="input-mdp1" style="font-weight: 800">CGU - CGV :
+			  <a href="#" class="infobulle">
+                  <div class="picto">i</div>
+                  <span>Votre document n'a pas été validé, merci de prendre contacte avec l'administrateur du site .</span>
+                </a>
+			  </label>
+			  <div class="line">
+			<p class="messageErreur" id="messageErreur">  Votre document n'a pas été validé, merci de prendre contacte avec l'administrateur du site </p>
+			  <%# <%= form_with model: @creator_doc, local: true, class: "form-profil form-DIY" do |form| %> 
+				<%# <%= form.hidden_field :creator_id, value: current_creator.id %> 
+				<%# <%= form.hidden_field :statut, value: "soumis"%> 
+				<%# <%= form.hidden_field :document_type, value: "cgu"%> 
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%# <%= form.file_field :document, :class => "btn-cta" %> 
+			  <%# <%= form.submit 'Envoyer', class: "btn-cta"%> 
+			  <%# <% end %> 
+			</div>
+			<% else  %>
+			<div class="line">
+			  <label for="input-mdp1" style="font-weight: 800">CGU - CGV :
+			  <a href="#" class="infobulle">
+                  <div class="picto">i</div>
+                  <span>Merci de signer la dernière version pdf des CGV-CGU en suivant le lien qui vous a été envoyé par mail</span>
+                </a>
+			  </label>
+			  <div class="line">
+			  </div>
+			  <p> La derniere version des CGU est telechargeable <a href="/CGU.pdf" class="themed_text btn btn-lg btn-custom" target="_blank">ICI</a></p>
+			  <%# <%= form_with model: @creator_doc, local: true, class: "form-profil form-DIY" do |form| %> 
+				<%# <%= form.hidden_field :creator_id, value: current_creator.id %> 
+				<%# <%= form.hidden_field :statut, value: "soumis"%> 
+				<%# <%= form.hidden_field :document_type, value: "cgu"%> 
+			  <%# <button type="file" name="mdp1" class="btn-cta" >Selectionner votre document</button> %>
+			  <%# <%= form.file_field :document, :class => "btn-cta" %> 
+			  <%# <%= form.submit 'Envoyer', class: "btn-cta"%> 
+			  <%# <% end %> 
+			</div>
+			<p class="messageErreur" id="messageErreur">  Vous n'avez pas encore soumis ce document, merci de le signer en suivant le lien qui vous a été envoyé par mail</p>
+			<% end %>
+			<br>
+			<br>
+		</div>
+
+
+	  </div>
+	</div>
+  </div>
+</section>
+
+
+
+
+
+<script type="text/javascript">
+$(function() {
+	$('input[name="daterange"]').daterangepicker({
+		opens: 'left',
+		autoUpdateInput: false,
+		autoApply:true,
+		singleDatePicker:true,
+		locale: {
+			cancelLabel: 'Clear',
+			format: "DD/MM/YYYY",
+			applyLabel: "Sélectionner",
+        	cancelLabel: "Annuler",
+        	fromLabel: "De",
+	        toLabel: "à",
+	        weekLabel: "Sem",
+	        daysOfWeek: ["Di","Lu","Ma","Me","Je","Ve","Sa"],
+	        monthNames: ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
+	        firstDay:1,
+		}
+	});
+
+	$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) 
+	{
+		$(this).val(picker.startDate.format('DD/MM/YYYY'));
+		$(this).trigger('change');
+	});
+});
+
+function validateFiles(inputFile) {
+  var maxExceededMessage = "Votre photo depasse le poid maximum autorisé (2 MB)";
+  var extErrorMessage = "Uniquement les images avec les extensions suivante sont autorisées: .jpg, .jpeg, .gif or .png is allowed";
+  var allowedExtension = ["jpg", "jpeg", "gif", "png", "pdf"];
+
+  var extName;
+  var maxFileSize = $(inputFile).data('max-file-size');
+  var sizeExceeded = false;
+  var extError = false;
+
+  $.each(inputFile.files, function() {
+    if (this.size && maxFileSize && this.size > parseInt(maxFileSize)) {sizeExceeded=true;};
+    extName = this.name.split('.').pop();
+    if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
+  });
+  if (sizeExceeded) {
+    window.alert(maxExceededMessage);
+    $(inputFile).val('');
+  };
+
+  if (extError) {
+    window.alert(extErrorMessage);
+    $(inputFile).val('');
+  };
+}
+</script>

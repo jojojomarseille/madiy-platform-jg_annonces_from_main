@@ -1,0 +1,181 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Mon compte createur (<%= current_creator.email%>) </h1>
+  </div>
+</section>
+
+<section class="section-titre section-padding">
+  <div class="section-content">
+    <header>
+      <h4>Retrouvez ici tous vos ateliers et gérez les informations de votre profil </h4>
+    </header>
+  </div>
+</section>
+
+<section class="section-double-bouton section-logged section-padding">
+	<div class="section-content">
+		<div class="header flex">
+		  <div class="button-no-js button-atelier selected" data-bloc="bloc-ateliers" data-controller="link" data-action="click->link#onClick">
+			<h4>
+			  <%= link_to "mes ateliers", users_orders_path , data: { target: "link.link" } %>
+			</h4>
+		  </div>
+
+          <div class="button-no-js button-profil " data-bloc="bloc-profil" data-controller="link" data-action="click->link#onClick">
+            <h4>
+              <%= link_to "mon profil", '/creator/logged-creator2/', data: { target: "link.link" } %>
+            </h4>
+          </div>
+		</div>
+		<div class="content">
+			<div class="bloc bloc-ateliers current">
+				<div class="filtres-ateliers flex">
+					<div class="select-container" data-default="Date">
+						<input type="text" name="daterange" placeholder="Date" />
+						<button class="btn-reset-select"><img src="./img/picto-close.svg" height="14" /></button>
+					</div>
+					<ul class="filtres">
+						<li class="tous"><input type="radio" id="tous" name="statut" value="tous" checked><label for="tous">Tous</label></li>
+						<li class="brouillon"><input type="radio" id="brouillon" name="statut" value="brouillon"><label for="brouillon">Brouillon</label></li>
+						<li class="soumis"><input type="radio" id="soumis" name="statut" value="soumis"><label for="soumis">Soumis</label></li>
+						<li class="enligne"><input type="radio" id="enligne" name="statut" value="enligne"><label for="enligne">En ligne</label></li>
+						<li class="termine"><input type="radio" id="termine" name="statut" value="termine"><label for="termine">Termine</label></li>
+					</ul>
+				</div>
+				<div class="ateliers-container">
+          <% @workshops.each do |workshop| %>
+            <div class="atelier flex">
+							<div class="visuel"><img src="./img/<% workshop.id%>" /></div>
+							<a href="./compte-createur-edition-atelier.php" class="data"><h3><% workshop.title%></h3></a>
+							<p class="etat termine">Termine</p>
+							<h3 class="inscrit">25</h3>
+							<ul class="actions">
+								<li><a href="./compte-createur-edition-atelier.php" class="btn-cta">Détails</a></li>
+								<li><a href="" class="btn-cta">Reconduire</a></li>
+								<li><a href="" class="btn-cta">Supprimer</a></li>
+							</ul>
+						</div>
+          <%end%>
+				</div>
+				<a href="./compte-createur-ajout-atelier.php" class="btn-cta btn-ajout-atelier">Ajouter un atelier</a>
+			</div>
+			<div class="bloc bloc-profil ">
+				<form class="form-profil form-DIY" id="form-profil" method="POST" action="">
+					<div class="line">
+						<label for="input-prenom">Prénom&nbsp;:</label>
+						<input type="text" name="prenom" class="prenom" id="input-prenom">
+					</div>
+					<div class="line">
+						<label for="input-nom">Nom&nbsp;:</label>
+						<input type="text" name="nom" class="nom" id="input-nom">
+					</div>
+					<div class="line">
+						<label for="input-mail">Mail&nbsp;:</label>
+						<input type="text" name="mail" class="mail" id="input-mail">
+					</div>
+					<div class="line">
+						<label for="input-telephone">Téléphone&nbsp;:</label>
+						<input type="text" name="telephone" class="telephone" id="input-telephone">
+					</div>
+					<div class="line">
+						<label for="input-societe">Société&nbsp;:</label>
+						<input type="text" name="societe" class="societe" id="input-societe">
+					</div>
+					<div class="line">
+						<label for="input-siret">SIRET&nbsp;:</label>
+						<input type="text" name="siret" class="siret" id="input-siret">
+					</div>
+					<div class="line">
+						<label for="input-adresse">Adresse&nbsp;:</label>
+						<input type="text" name="adresse" class="adresse" id="input-adresse">
+					</div>
+					<div class="line">
+						<label for="input-cp">Code postal&nbsp;:</label>
+						<input type="text" name="cp" class="cp" id="input-cp">
+					</div>
+					<div class="line">
+						<label for="input-ville">Ville&nbsp;:</label>
+						<input type="text" name="ville" class="ville" id="input-ville">
+					</div>
+					<h3>Changement de mot de passe</h3>
+					<div class="line">
+						<label for="input-mdp1">Mot de passe actuel&nbsp;:</label>
+						<input type="password" name="mdp1" class="mdp" id="input-mdp1">
+					</div>
+					<div class="line">
+						<label for="input-mdp2">Nouveau mot de passe&nbsp;:</label>
+						<input type="password" name="mdp2" class="mdp" id="input-mdp2">
+					</div>
+					<div class="line">
+						<label for="input-mdp3">Confirmation&nbsp;:</label>
+						<input type="password" name="mdp3" class="mdp" id="input-mdp3">
+					</div>
+					<div class="btn-container">
+						<p class="messageErreur" id="messageErreur">Texte du message d'erreur et / ou confirmation</p>
+						<input type="submit" value="Enregistrer les modifications" class="btn-submit btn-cta" id="btn-submit" />
+					</div>
+				</form>
+				<form class="form-bio form-DIY" id="form-profil-mdp" method="POST" action="">
+					<h3>Ma bio</h3>
+					<div class="line line-photo-profil">
+						<div class="photo-container">
+							<img src="./img/section-apropos-parcours-photo.jpg" class="photo" />
+						</div>
+						<button class="btn-cta">Changer ma photo de profil</button>
+					</div>
+					<div class="line line-textarea">
+						<label for="presentation">Présentation&nbsp;:</label>
+						<textarea name="presentation" id="presentation" class="textarea"></textarea>
+					</div>
+					<div class="line">
+						<label for="input-site">Site&nbsp;:</label>
+						<input type="text" name="site" class="site" id="input-site">
+					</div>
+					<div class="line">
+						<label for="input-facebook">Facebook&nbsp;:</label>
+						<input type="text" name="facebook" class="facebook" id="input-facebook">
+					</div>
+					<div class="line">
+						<label for="input-instagram">Instagram&nbsp;:</label>
+						<input type="text" name="instagram" class="instagram" id="input-instagram">
+					</div>
+					<div class="btn-container">
+						<p class="messageErreur" id="messageErreur">Texte du message d'erreur et / ou confirmation</p>
+						<input type="submit" value="Enregistrer les modifications" class="btn-submit btn-cta" id="btn-submit-mdp" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script type="text/javascript">
+$(function() {
+	$('input[name="daterange"]').daterangepicker({
+		opens: 'left',
+		autoUpdateInput: false,
+		autoApply:true,
+		singleDatePicker:true,
+		locale: {
+			cancelLabel: 'Clear',
+			format: "DD/MM/YYYY",
+			applyLabel: "Sélectionner",
+        	cancelLabel: "Annuler",
+        	fromLabel: "De",
+	        toLabel: "à",
+	        weekLabel: "Sem",
+	        daysOfWeek: ["Di","Lu","Ma","Me","Je","Ve","Sa"],
+	        monthNames: ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
+	        firstDay:1,
+		}
+	});
+
+	$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) 
+	{
+		$(this).val(picker.startDate.format('DD/MM/YYYY'));
+		$(this).trigger('change');
+	});
+
+
+});
+</script>

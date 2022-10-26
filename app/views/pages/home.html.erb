@@ -1,0 +1,55 @@
+
+<% content_for :body_class, :home %>
+<%= content_for :metas do %>
+  <meta name="turbolinks-cache-control" content="no-cache">
+<% end %>
+
+<section class="section-header-home">
+
+  <div class="item-header-fix" ><%= image_tag "section-header-home-photo_janvier22-V2.jpg" %></div>
+
+  <div class="masque-bleu"><%= image_tag "header-background.svg" %></div>
+  <div class="section-content">
+    <h1 class="titre-amatic">DÉVELOPPEZ VOTRE CRÉATIVITÉ AUPRÈS DES CRÉATEURS DE VOTRE RÉGION.</h1>
+    <div class="bloc-recherche" data-controller="home-search" data-home-search-path="<%= workshops_path %>">
+      <p class="titre">Trouvez votre prochain Atelier DIY <u class="nobreak">à La Rochelle</u>, <u class="nobreak">ROCHEFORT</u>, et Leur région</p>
+        <div class="select-container">
+          <%= select_tag :category_id_eq, options_from_collection_for_select(WorkshopCategory.joins(:workshops).distinct, :id, :name), prompt: "Choisissez votre type d'atelier", data: { target: "home-search.select", action: "home-search#onSelectChange" } %>
+        </div>
+        <%= link_to workshops_path, class: "btn-cta", data: { target: "home-search.link" } do %>
+          Découvrir tous <br/>nos&nbsp;ateliers&nbsp;créatifs
+        <% end %>
+    </div>
+  </div>
+</section>
+
+<section class="section-presentation-home section-padding">
+  <div class="section-content">
+    <h3><span class="souligne">Une billeterie en ligne au service de votre créativité</span></h3>
+    <ul class="flex">
+      <li><figure><%= image_tag "picto-atelier1.svg" %></figure><div>Multipliez les expériences créatives et les découvertes</div></li>
+      <li><figure><%= image_tag "picto-atelier2.svg" %></figure><div>Recherchez un atelier créatif parmi un vaste choix de thèmes</div></li>
+      <li><figure><%= image_tag "picto-atelier3.svg" %></figure><div>Réservez et payez en ligne en&nbsp;toute simplicité</div></li>
+    </ul>
+  </div>
+</section>
+
+<%= render "shared/workshops_quick_view", title: "Les ateliers DIY du moment" %>
+
+<section class="section-double-cta section-padding">
+  <div class="section-content flex">
+    <div class="colonne" id="colonne1">
+      <h3>Vous planifiez un événement privé ou vous êtes une entreprise ?</h3>
+      <div class="cta-container"><a href="/pages/evenements" class="btn-cta">Demandez votre atelier sur&nbsp;mesure ici</a></div>
+    </div>
+    <div class="colonne" id="colonne2">
+      <h3>Vous êtes <br/>créateur / maker / animateur</h3>
+      <div class="cta-container"><a href="/pages/proposer-atelier" class="btn-cta">Pour proposer votre atelier c'est par ici</a></div>
+    </div>
+  </div>
+  <%= image_tag "picto-main.svg", class: "main droite" %>
+  <%= image_tag "picto-main.svg", class: "main gauche" %>
+</section>
+
+
+

@@ -1,0 +1,14 @@
+<% category = ['culinaire','bien-etre','zero-dechet','nature','textile','art','craft','home-decor'].shuffle.pop %>
+<% title = ['Nom de l\'atelier','Nom de l\'atelier qui va sur deux lignes','Nom de l\'atelier qui va surement être un peu trop long pour s\'afficher en entier'].shuffle.pop %>
+<% image = ['media-exemple1.jpg','media-exemple2.jpg','media-exemple3.jpg'].shuffle.pop %>
+
+<div class="item item-atelier cat-<%= category %>">
+  <a href="" class="atelier">
+    <div class="visuel"><%= image_tag image %><div class="categorie"><span class="titre"><%= category.capitalize %></span></div></div>
+    <div class="content">
+      <h3><%= title %></h3>
+      <p class="mainColor">À partir de <span>200€</span></p>
+      <p><i>Samedi 8 septembre 14:00</i></p>
+    </div>
+  </a>
+</div>

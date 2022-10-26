@@ -1,0 +1,111 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Mon compte createur </h1>
+  </div>
+</section>
+
+<section class="section-titre section-padding">
+  <div class="section-content">
+    <header>
+      <h4>Retrouvez ici tous vos ateliers et gérez les informations de votre profil </h4>
+    </header>
+  </div>
+</section>
+
+<section class="section-double-bouton section-logged section-padding">
+  <div class="section-content">
+    <div class="header flex">
+      <div class="button-no-js button-atelier selected" data-bloc="bloc-ateliers" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mes ateliers", "/workshops/index_creator/#{current_creator.id}" %>
+        </h4>
+      </div>
+
+      <div class="button-no-js button-profil " data-bloc="bloc-profil" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mon profil", "/creators/edit/#{current_creator.id}"%>
+        </h4>
+      </div>
+	</div>
+  </div>
+</section>
+
+<section class="section-double-bouton section-logged section-padding">
+  <div class="section-content">
+	<div class="content">
+	  <div class="bloc bloc-ateliers current">
+		<div class="ateliers-container">
+          <% @workshops.each do |workshop| %>
+			<div class="atelier flex">
+			<div class="visuel"><%= image_tag workshop.main_picture.variant(
+              workshop.crop_constraints.merge(resize_to_limit: [200, 126])
+            ) if workshop.main_picture.attached? %></div>
+						  <% if workshop.statut == "Brouillon"%>
+								<a href="./edit/<%=workshop.id%>" class="data"><h3><%= workshop.title%></h3></a>
+							<% else %>
+							  <a href="./workshop_creator_view/<%=workshop.id%>" class="data"><h3><%= workshop.title%></h3></a>
+							<% end%>
+
+				<p class="etat termine"><%= workshop.colored_statut%></p>
+				<h3 class="inscrit"><%= workshop.total_booking%></h3>
+				<ul class="actions">
+				<% if workshop.statut == "Brouillon"%>
+				  <li><%=link_to "Voir", "./edit/#{workshop.id}", class: "btn-cta"%></li>
+				<% else %>
+				  <li><%=link_to "Détails", "./workshop_creator_view/#{workshop.id}", class: "btn-cta"%></li>
+				<%end%>
+					<% if workshop.archivable? %>
+					<li><%= link_to 'Archiver', "../#{workshop.id}", method: :patch, data: {confirm: "En archivant l'atelier, il n'apparaîtra plus dans votre liste d'ateliers, ni sur le site, mais peut être à tout moment désarchivé par l'administrateur à la demande"}, class: "btn-cta" %></li> 
+					<% else %>
+					<li><%= link_to 'Archiver', "#doesnotexist", data: {confirm: "Vous ne pouvez pas archiver un atelier dont des dates sont a venir"}, class: "btn-cta" %></li>
+					<%end%>
+				</ul>
+			</div>
+          <%end%>
+		</div>
+		<a href="../new" class="btn-cta btn-ajout-atelier">Ajouter un atelier</a>
+	  </div>
+	</div>
+</section>
+
+<script type="text/javascript">
+$(function() {
+	$('input[name="daterange"]').daterangepicker({
+		opens: 'left',
+		autoUpdateInput: false,
+		autoApply:true,
+		singleDatePicker:true,
+		locale: {
+			cancelLabel: 'Clear',
+			format: "DD/MM/YYYY",
+			applyLabel: "Sélectionner",
+        	cancelLabel: "Annuler",
+        	fromLabel: "De",
+	        toLabel: "à",
+	        weekLabel: "Sem",
+	        daysOfWeek: ["Di","Lu","Ma","Me","Je","Ve","Sa"],
+	        monthNames: ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
+	        firstDay:1,
+		}
+	});
+
+	$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) 
+	{
+		$(this).val(picker.startDate.format('DD/MM/YYYY'));
+		$(this).trigger('change');
+	});
+});
+
+$('.menu-item-atelier').addClass('current');
+
+var html = "<%=j render @workshops %>";
+var filters = "<%=j link_to "Réinitialiser les filtres", workshops_path, class: "btn-cta" %>";
+var element = document.getElementById("workshops-grid");
+
+
+element.innerHTML = html;
+document.getElementById("filters").innerHTML = filters;
+document.getElementById("workshops-pagination").innerHTML = pagination;
+
+
+</script>

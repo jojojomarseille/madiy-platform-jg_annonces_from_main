@@ -1,0 +1,3 @@
+class CartsController < BaseController
+
+end

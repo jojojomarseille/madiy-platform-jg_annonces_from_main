@@ -1,0 +1,4 @@
+var html = "<%=j @workshop.present? ? render('with_workshop_form') : render('form') %>";
+var element = document.getElementById("<%= @workshop.present? ? "with-workshop-voucher-form" : "voucher-form" %>");
+
+element.innerHTML = html;

@@ -1,0 +1,21 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Oops…</h1>
+  </div>
+</section>
+
+<section class="section-apropos-valeurs section-padding">
+  <div class="section-content">
+    <div class="flex">
+      <div class="valeurs">
+        <center><%= image_tag "oups.svg", class: "visuel", style: "width: 80%" %></center></div>
+      <div class="suite double-colonne">
+
+        <p>Une erreur s'est produite ! </p>
+        <p>Si le problème persiste, n'hésitez pas à nous contacter par mail à <a href="mailto:hello@mesateliersdiy.fr">hello@mesateliersdiy.fr</a></p>
+        <%= link_to "Retourner à la page précédente", :back, class: "btn-cta" %>
+        <%= link_to "Retourner à l'accueil", root_path, class: "btn-cta" %>
+      </div>
+    </div>
+  </div>
+</section>

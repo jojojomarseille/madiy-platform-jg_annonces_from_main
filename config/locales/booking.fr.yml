@@ -1,0 +1,16 @@
+fr:
+  activerecord:
+    models:
+      booking:
+        one: Réservation
+        other: Réservations
+    attributes:
+      booking:
+        workshop_event: Événement
+        seats: Places réservées
+        booked_by_admin: Réservation en boutique
+        price_category: Tarif
+        email: Email du client
+        first_name: Prénom
+        last_name: Nom
+        phone_number: Téléphone

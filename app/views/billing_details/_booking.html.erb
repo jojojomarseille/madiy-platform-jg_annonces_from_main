@@ -1,0 +1,19 @@
+<tr>
+  <td>
+    <h4>
+      <%= item.cartable.workshop_event.workshop.title %>
+    <h4>
+    <p class="date">
+      <%= l item.cartable.workshop_event.start_time.to_date, format: :event %>
+    </p>
+  </td>
+
+  <td class="type strong" style="text-align: right">
+    <%= item.quantity %> x <%= t("activerecord.attributes.workshop_price.categories.#{item.cartable.price_category}") %>
+  </td>
+  <td class="center">
+    <h4>
+      <%= short_number_to_currency(Money.new(item.cartable.amount_cents)) %>
+    </h4>
+  </td>
+</tr>

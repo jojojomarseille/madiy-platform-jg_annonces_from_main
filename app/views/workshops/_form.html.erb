@@ -1,0 +1,52 @@
+<%= form_with scope: :booking,
+  url: bookings_path,
+  class: "form-reservation-atelier form-DIY",
+  data: { controller: "workshop-events", workshop_events_events: events.to_json, workshop_events_initial: events.first&.id } do |f| %>
+
+  <div class="line line-check">
+    <label for="list-check">Dates&nbsp;:</label>
+    <ul class="list-check">
+      <% events.each_with_index do |event, idx| %>
+        <li>
+          <%= f.radio_button :event_id, event.id, checked: idx == 0, data: { event_id: event.id, action: "workshop-events#eventSelected" } %>
+          <%= f.label :event_id, l(event.start_time, format: :event), value: event.id %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <template data-target="workshop-events.template">
+    <label>Infos&nbsp;:</label>
+    <p>
+      <span>Durée : <%= workshop_duration(workshop) %></span>
+      <% if workshop.hide_end_time %>
+        <span>À partir de /START_TIME/</span>
+      <% else %>
+        <span>De /START_TIME/ à /END_TIME/</span>
+      <% end %>
+      <span>/SEATS_LEFT/</span>
+    </p>
+  </template>
+
+  <div class="line line-infos" data-target="workshop-events.eventElement"></div>
+  <div class="line line-compteur">
+    <label>Réservation&nbsp;:</label>
+    <% workshop.prices.each_with_index do |price, index| %>
+      <%= f.hidden_field "prices[][id]", value: price.id %>
+      <div class="compteur flex">
+        <label for=""><%= t("activerecord.attributes.workshop_price.categories.#{price.category}") %> <i>(<%= short_number_to_currency(price.price) %>)</i></label>
+        <div class="cpt">
+          <button class="btn-cpt-moins" data-action="workshop-events#refreshTotalPrice">-</button>
+          <%= f.number_field "prices[][amount]", class: "input-cpt", value: 0, data: { target: "workshop-events.priceSeats", value: price.seats, price: price.price_cents, action: "workshop-events#checkSeats workshop-events#refreshTotalPrice" } %>
+          <button class="btn-cpt-plus" data-action="workshop-events#checkSeats workshop-events#refreshTotalPrice">+</button>
+        </div>
+        <span>place(s)</span>
+      </div>
+    <% end %>
+    <div class="prix" data-target="workshop-events.totalPrice"></div>
+  </div>
+  <div class="btn-container">
+    <input type="submit" value="Réserver" class="btn-submit btn-cta" id="btn-submit" />
+  </div>
+
+<% end %>

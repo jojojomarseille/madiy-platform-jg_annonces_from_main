@@ -1,0 +1,73 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Offrir</h1>
+  </div>
+</section>
+
+<section class="section-titre section-titre-offrir section-padding">
+  <div class="section-content">
+    <header>
+      <h2 class="titre-amatic">Faites plaisir à vos proches et offrez un atelier <br/>ou un bon cadeau mes ateliers DIY</h2>
+      <h4 id="form-target">Pour offrir une expérience créative qu’il ou elle n’oubliera pas auprès des créateurs de la région
+        <br/>Pour partager un joli moment créatif avec vos proche
+        <br/>Car toutes les occasions sont bonnes pour offrir un moment de détente créatif</h4>
+    </header>
+  </div>
+</section>
+
+<section class="section-double-bouton section-offrir section-padding">
+  <div class="section-content">
+    <div class="header flex">
+      <div class="button button-atelier selected" data-bloc="bloc-atelier">
+        <div class="picto"></div>
+        <h4>Offrir l’atelier de ses rêves</h4>
+      </div>
+      <div class="button button-carte" data-bloc="bloc-carte">
+        <div class="picto"></div>
+        <h4>Offrir une carte cadeau</h4>
+      </div>
+    </div>
+    <div class="content">
+      <div class="bloc bloc-atelier current" id="with-workshop-voucher-form">
+        <% if @workshop.present? %>
+          <%= render 'with_workshop_form' %>
+        <% else %>
+          <p>Pour offrir un atelier sans date spécifique, rien de plus simple :</p>
+          <ol>
+            <li>Rendez-vous sur <b>la page des ateliers pour faire votre choix</b></li>
+            <li>Cliquez sur <b>"offrir"</b></li>
+            <li>Indiquez le <b>nom de la personne à qui vous souhaitez l'offrir</b> et votre nom et écrivez votre <b>message personnalisé</b></li>
+            <li>PAYEZ EN LIGNE EN TOUTE SÉCURITÉ ET RECEVEZ VOTRE CARTE CADEAU POUR L'ATELIER CHOISI PAR EMAIL</li>
+          </ol>
+          <p>
+            <small><strong>La carte cadeau ne constitue pas un billet. La personne devra impérativement valider une date sur le site à l'aide du code cadeau reçu afin de pouvoir participer à l'atelier. La démarche à suivre est indiquée sur la carte cadeau. Celle-ci est valable pendant 1 an à partir de la date d'achat.</strong></small>
+          </p>
+          <p>
+            <small>Pour offrir un atelier à une date précise, suivez le processus de réservation classique. Vous obtiendriez ensuite un billet non nominatif, téléchargeable en pdf.</small>
+          </p>
+          <div class="btn-container">
+            <%= link_to "Trouver un atelier", workshops_path, class: "btn-cta" %>
+          </div>
+        <% end %>
+      </div>
+      <div class="bloc bloc-carte">
+        <p>Le bon d’achat est valable 1 an à partir de la date d’achat</p>
+        <p>La personne pourra l’utiliser à tout moment en une ou plusieurs fois.</p>
+        <ol>
+          <li><b>Choisissez votre montant.</b></li>
+          <li><b>Indiquez le nom de la personne à qui vous souhaitez l’offrir et votre nom et écrivez votre message personnalisé.</b></li>
+          <li><b>Payez en ligne en toute sécurité.</b></li>
+          <li><b>Recevez votre carte cadeau par email <!--<br/>ou par courrier postal</b>--></li>
+        </ol>
+
+        <div id="voucher-form">
+          <%= render 'form' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="text/javascript">
+  $('.menu-item-offrir').addClass('current');
+</script>

@@ -1,0 +1,29 @@
+<tr>
+  <td class="supp">
+    <%= link_to "x", cart_item_path(item), class: "btn-supp", remote: true, method: :delete, data: { confirm: "Êtes-vous sûr ?"} %>
+  </td>
+  <td class="titre" colspan="2">
+    <h3>
+      <% if item.cartable.workshop.present? %>
+        Bon cadeau pour l'atelier "<%= item.cartable.workshop.title %>"
+      <% else %>
+        Bon cadeau d'une valeur de <%= short_number_to_currency(Money.new(item.cartable.amount_cents)) %>
+      <% end %>
+    </h3>
+    <p class="date">
+      De la part de <%= item.cartable.from %> à l'attention de <%= item.cartable.to %>
+    </p>
+  </td>
+
+  <td class="prix" colspan="2">
+    <h3>
+      <%= short_number_to_currency(Money.new(item.cartable.amount_cents)) %>
+    </h3>
+  </td>
+
+  <td class="prix-total center">
+    <h2>
+      <%= short_number_to_currency(Money.new(item.amount_cents)) %>
+    </h2>
+  </td>
+</tr>

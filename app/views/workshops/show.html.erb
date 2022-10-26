@@ -1,0 +1,281 @@
+<section class="section-header-content section-header-atelier-detail">
+  <div class="section-content">
+    <h1><%= @workshop.title %></h1>
+  </div>
+</section>
+
+<section class="section-reservation-atelier">
+  <div class="section-content section-content-lien-retour">
+    <%= link_to workshops_path do %>
+      <%= image_tag "picto-fleche2.png", class: "fleche" %> Retour aux ateliers
+    <% end %>
+  </div>
+
+  <div class="section-content bg-bleu">
+    <div class="flex">
+      <div class="colonne colonne1">
+        <div class="grid">
+          <div class="current item-atelier <%= category_css_class(@workshop.category) %>">
+            <%# <%= image_tag @workshop.main_picture %> 
+            <% if @workshop.main_picture.attached?%>
+                <% if @workshop.crop_x != nil %>
+                  <%= image_tag @workshop.main_picture.variant(@workshop.crop_constraints.merge(resize_to_limit: [600, 400])) %>
+                <% else %>
+                  <%= image_tag @workshop.main_picture.variant(:gravity=>"Center", resize: "600x400^", crop: '600x400+0+0') %>
+                <% end %>
+            <%end%>
+            <div class="categorie">
+              <span class="titre"><%= @workshop.category.name %></span>
+
+              <% if @workshop.online? %>
+                <span style="float: right">
+                  En ligne
+                </span>
+              <% end %>
+            </div>
+          </div>
+
+          <% [@workshop.main_picture, @workshop.pictures].flatten.each_with_index do |picture, index| %>
+            <div class="miniature <%= index.zero? ? "selected" : nil %>%">
+              <%= image_tag picture.variant(:gravity=>"Center", resize: "600x400^", crop: '600x400+0+0') %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="colonne colonne2">
+        <% if @workshop.events.in_future.empty? %>
+          <%= render "no_events_form", workshop: @workshop %>
+        <% else %>
+          <%= render "form", workshop: @workshop, events: @workshop.events.in_future %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-description-atelier section-padding">
+  <div class="section-content">
+    <div class="flex">
+      <div class="colonne">
+        <div class="bloc bloc-description">
+          <h3 class="texte"><%= @workshop.goal %></h3>
+          <%= simple_format @workshop.description %>
+        </div>
+        <div class="bloc bloc-savoir-plus">
+          <h3 class="souligne droite">En savoir plus</h3>
+          <p><b>Durée</b> : <%= workshop_duration(@workshop) %></p>
+          <%= simple_format @workshop.more %>
+        </div>
+        <div class="bloc bloc-animateur">
+          <h3 class="souligne droite">Votre animateur</h3>
+          <div class="flex">
+            <% if @workshop.creator.picture.attached? %>
+              <div class="photo-container">
+                <%= image_tag @workshop.creator.picture.variant(:gravity=>"Center", resize: "100x100^", crop: '100x100+0+0'), class: "photo" %>
+              </div>
+            <% end %>
+            <div class="infos">
+              <h4 class="mainColor">
+                <%= @workshop.creator.first_name %>, <%= @workshop.creator.company %>
+              </h4>
+              <p><%= @workshop.creator.bio %></p>
+              <p>
+                <% if @workshop.creator.website.present? %>
+                  <a href="<%= @workshop.creator.website %>" class="btn-cta" target="_blank">Son site</a>
+                <% end %>
+
+                <% if @workshop.creator.facebook.present? %>
+                  <a href="<%= @workshop.creator.facebook %>" class="btn-cta" target="_blank">Sa page Facebook</a>
+                <% end %>
+
+                <% if @workshop.creator.instagram.present? %>
+                  <a href="<%= @workshop.creator.instagram %>" class="btn-cta" target="_blank">Son Instagram</a>
+                <% end %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="colonne">
+        <div class="bloc bloc-actions">
+          <% if @workshop.events.in_future.any? && @workshop.giftable? %>
+            <div class="bloc-cta flex">
+              <figure><%= image_tag "picto-cadeau-bleu.svg" %></figure>
+              <div class="texte">Vous pouvez offrir / réserver cet atelier sans date précise</div>
+              <%= link_to new_voucher_path(workshop_id: @workshop.id, anchor: "form-target"), class: "btn-cta" do %>
+                <figure><%= image_tag "picto-cadeau-bleu.svg", height: "25px" %></figure> Offrir
+              <% end %>
+            </div>
+          <% end %>
+          <!--
+          <div class="bloc-cta flex">
+            <figure><%= image_tag "picto-etoile-blanc.svg" %></figure>
+            <div class="texte">Demander une privatisation</div>
+            <a href="" class="btn-cta"><figure><%= image_tag "picto-etoile-blanc.svg" %></figure> Privatiser</a>
+          </div>
+          -->
+          <%= form_with model: [@workshop, @reminder], class: "form-newsletter-atelier" do |f| %>
+            <h4>Vous souhaitez être informé(e) <br/>des prochaines dates de cet atelier&nbsp;?</h4>
+            <div class="flex">
+              <%= f.email_field :email, placeholder: "Votre adresse email" %>
+              <%= f.submit "M'avertir", class: "btn-submit btn-newsletter btn-cta" %>
+            </div>
+          <% end %>
+          <!--
+          <div class="partage flex">
+            <h4>Partager : </h4>
+            <ul class="liste-partage flex">
+              <li><a href="" class="item-reseaux"><%= image_tag "picto-facebook-bleu.svg" %></a>
+              <li><a href="" class="item-reseaux"><%= image_tag "picto-pinterest-bleu.svg" %></a>
+              <li><a href="" class="item-reseaux"><%= image_tag "picto-twitter-bleu.svg" %></a>
+            </ul>
+          </div>
+          -->
+        </div>
+        <% if @workshop.address.present? %>
+          <% if !@workshop.online? || (@workshop.online? && @workshop.shipment? && @workshop.creator.click_and_collect?) %>
+            <div class="bloc bloc-lieu">
+              <h3 class="souligne droite">Le lieu</h3>
+              <!--<p><b>Atelier 328</b></p>-->
+              <p><%= @workshop.address.street %> <br/><%= @workshop.address.postal_code %> <%= @workshop.address.city %></p>
+              <!--<div class="carte">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2763.4009534888187!2d-1.1519493486154095!3d46.162673694482706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x480153a907363171%3A0x95ec6efbdf582b67!2s4%20Rue%20du%20Minage%2C%2017000%20La%20Rochelle!5e0!3m2!1sfr!2sfr!4v1595324248025!5m2!1sfr!2sfr" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+              </div>-->
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--
+<section class="section-commentaires-atelier section-vague-bleue">
+  <%= image_tag "section-apropos-avantages-bg-top.png", width: "100%", class: "bg-bottom", style: "margin-bottom: -5px" %>
+  <div class="content">
+    <div class="section-content">
+      <h3 class="souligne">Commentaires</h3>
+      <div class="commentaires-container">
+        <div class="commentaire">
+          <header class="flex">
+            <div class="etoiles"><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-blanc2.svg" %></div>
+            <h4>Philip K. Dick</h4>
+          </header>
+          <div class="content">
+            <p>Cum saepe multa, tum memini domi in hemicyclio sedentem, ut solebat, cum et ego essem una et pauci admodum familiares, in eum sermonem illum incidere qui tum forte multis erat in ore. Meministi enim profecto, Attice, et eo magis, quod P. Sulpicio utebare multum, cum is tribunus plebis capitali odio a Q. Pompeio, qui tum erat consul, dissideret, quocum coniunctissime et amantissime vixerat, quanta esset hominum vel admiratio vel querella.</p>
+          </div>
+        </div>
+        <div class="commentaire">
+          <header class="flex">
+            <div class="etoiles"><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-blanc2.svg" %><%= image_tag "picto-etoile-blanc2.svg" %></div>
+            <h4>Arthur Morgan</h4>
+          </header>
+          <div class="content">
+            <p>Cum saepe multa, tum memini domi in hemicyclio sedentem, ut solebat, cum et ego essem una et pauci admodum familiares, in eum sermonem illum incidere qui tum forte multis erat in ore. Meministi enim profecto, Attice, et eo magis, quod P. Sulpicio utebare multum, cum is tribunus plebis capitali odio a Q. Pompeio, qui tum erat consul, dissideret, quocum coniunctissime et amantissime vixerat, quanta esset hominum vel admiratio vel querella.</p>
+          </div>
+        </div>
+        <div class="commentaire">
+          <header class="flex">
+            <div class="etoiles"><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-bleu.svg" %><%= image_tag "picto-etoile-bleu.svg" %></div>
+            <h4>Samuel L. Jackson</h4>
+          </header>
+          <div class="content">
+            <p>Cum saepe multa, tum memini domi in hemicyclio sedentem, ut solebat, cum et ego essem una et pauci admodum familiares, in eum sermonem illum incidere qui tum forte multis erat in ore. Meministi enim profecto, Attice, et eo magis, quod P. Sulpicio utebare multum, cum is tribunus plebis capitali odio a motherfucker Q. Pompeio.</p>
+          </div>
+        </div>
+        <div class="nav-commentaires flex">
+          <a href="" class="nav prev disabled"><%= image_tag "picto-fleche2.png", width: "31" %></a>
+          <a href="" class="nav next"><%= image_tag "picto-fleche2.png", width: "31" %></a>
+        </div>
+        <div class="bloc-actions">
+          <div class="bloc-cta flex">
+            <figure><%= image_tag "picto-bulle2.svg" %></figure>
+            <div class="texte">Vous avez participé à l’atelier&nbsp;? <br/>RDV sur votre compte pour laisser un&nbsp;commentaire</div>
+            <a href="" class="btn-cta">Laisser un commentaire</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+-->
+
+<section class="section-liste-ateliers section-background-liste section-padding">
+  <div class="section-content">
+    <h2>Vous aimerez aussi</h2>
+    <div class="owl-carousel owl-ateliers-home" data-controller="relateds" data-relateds-id="<%= @workshop.id %>" data-relateds-url="<%= relateds_path %>">
+    </div>
+    <div class="cta-container">
+      <%= link_to "Voir plus", workshops_path, class: "btn-cta" %>
+    </div>
+  </div>
+</section>
+
+
+<script type="text/javascript">
+$('.menu-item-atelier').addClass('current');
+
+/****************************************************************************/
+/* GALERIE
+/****************************************************************************/
+
+$('.miniature').click(function(e)
+{
+  $(this).parent().find('.miniature').removeClass('selected');
+  $(this).addClass('selected');
+  $(this).parent().find('.current img').attr('src', $(this).find('img').attr('src'));
+});
+
+/****************************************************************************/
+/* CARROUSSEL
+/****************************************************************************/
+
+function owlInitialize()
+{
+  $('.owl-ateliers-home').owlCarousel({
+    items:3,
+    loop:true,
+    margin:15,
+    nav:true,
+    dots:false,
+    smartSpeed:1500,
+    autoplay:false,
+    autoplayTimeout:5000,
+    autoplayHoverPause:true,
+    responsive:{
+      0:{items:1,nav:true,dots:false},
+      580:{items:2,nav:true,dots:false},
+      860:{items:3,nav:true,dots:false}
+    }
+  });
+}
+
+window.addEventListener('load', function () { owlInitialize(); }, false);
+
+$(document).keydown(function(eventObject) {
+  if(eventObject.which==37) {$('.owl-prev').click();}
+  else if(eventObject.which==39) {$('.owl-next').click();}
+});
+
+/****************************************************************************/
+/* COMPTEURS + / -
+/****************************************************************************/
+
+$('.btn-cpt-plus').click(function(e)
+{
+  e.preventDefault();
+  if(Number.isInteger(parseInt($(this).parent().find('.input-cpt').val()))) $(this).parent().find('.input-cpt').val( parseInt($(this).parent().find('.input-cpt').val()) + 1 );
+  else $(this).parent().find('.input-cpt').val(1);
+
+});
+$('.btn-cpt-moins').click(function(e)
+{
+  e.preventDefault();
+  if(parseInt($(this).parent().find('.input-cpt').val()) > 0)
+  {
+    if(Number.isInteger(parseInt($(this).parent().find('.input-cpt').val()))) $(this).parent().find('.input-cpt').val( parseInt($(this).parent().find('.input-cpt').val()) - 1 );
+    else $(this).parent().find('.input-cpt').val(0);
+  }
+  else $(this).parent().find('.input-cpt').val(0);
+});
+</script>

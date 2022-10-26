@@ -1,0 +1,97 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Paiement</h1>
+  </div>
+</section>
+
+<section class="section-breadcrumb section-padding">
+  <div class="section-content">
+    <ol>
+      <li>
+        Panier
+      </li>
+      <li>Connexion</li>
+      <li>Récapitulatif</li>
+      <li class="current">Paiement</li>
+    </ol>
+  </div>
+</section>
+
+<section class="section-recap-facturation section-padding">
+  <div class="section-content" id="payment-form">
+    <div id="card-registration-form">
+      <div class="bloc-reservation">
+        <h3 class="souligne">Votre réservation</h3>
+        <table class="table-reservations" style="width: 100%">
+          <% @cart.cart_items.each do |cart_item| %>
+            <%= render "billing_details/#{cart_item.cartable_type.underscore}", item: cart_item %>
+          <% end %>
+
+          <% if @cart.discount.present? %>
+            <tr>
+              <td>
+                <h4>
+                  Code promo d'une valeur de <%= short_number_to_currency(Money.new(@cart.discount.amount_cents)) %>
+                <h4>
+              </td>
+
+              <td class="type strong" style="text-align: right"></td>
+              <td class="center">
+                <h4>
+                  -<%= short_number_to_currency(Money.new(@cart.discount.amount_cents)) %>
+                </h4>
+              </td>
+            </tr>
+
+          <% end %>
+
+          <tr class="footer">
+            <td></td>
+            <td class="right" style="text-align: right">Total TTC</td>
+            <td class="center">
+              <h3>
+                <%= short_number_to_currency(Money.new(@cart.amount_cents)) %>
+              </h3>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <% if @cart.amount_cents.zero? %>
+        <div class="bloc-cta">
+          <p class="messageErreur" id="messageErreur"></p>
+
+          <%= link_to "Valider le panier", no_payments_path, class: "btn-cta", method: :post, remote: true %>
+        </div>
+      <% else %>
+        <ul class="cards">
+          <% @cards.each do |card| %>
+            <li class="card">
+              <p>
+                Carte dont le numéro contient &nbsp; <strong><%= card["Alias"] %></strong>
+              </p>
+              <%= form_with scope: :payment, url: payments_path, data: { controller: 'card' } do |f| %>
+                <%= f.hidden_field :card_id, value: card["Id"] %>
+
+                <%= f.hidden_field :screen_height %>
+                <%= f.hidden_field :screen_width %>
+                <%= f.hidden_field :color_depth %>
+                <%= f.hidden_field :java_enabled %>
+
+                <%= f.submit "Payer avec cette carte", class: "btn-cta" %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+        <div class="bloc-cta">
+          <p class="messageErreur" id="messageErreur"></p>
+
+          <%= link_to "#{@cards.any? ? "Payer avec une nouvelle carte" : "Payer par carte bancaire"}", card_registrations_path, class: "btn-cta", method: :post, remote: true %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="payment-platform">
+    <%= image_tag "mango.png" %>
+  </div>
+</section>

@@ -1,0 +1,11 @@
+fr:
+  activerecord:
+    models:
+      address:
+        one: Adresse
+        other: Adresses
+    attributes:
+      address:
+        street: Adresse
+        postal_code: Code postal
+        city: Ville

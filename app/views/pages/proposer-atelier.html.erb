@@ -1,0 +1,62 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Proposer un atelier</h1>
+  </div>
+</section>
+
+<section class="section-titre section-padding">
+  <div class="section-content">
+    <header><h2 class="titre-amatic">vous organisez ou souhaitez organiser des ateliers créatifs ?</h2></header>
+  </div>
+</section>
+
+<section class="section-concept section-padding">
+  <div class="section-content">
+    <div class="flex">
+      <div class="colonne colonne1"><%= image_tag "section-proposer-atelier-img.jpg", class: "visuel" %></div>
+      <div class="colonne colonne2">
+        <p><b>Alors rejoignez la communauté Mes ateliers DIY dés aujourd’hui et inspirez le plaisir de créer de ses propres mains à travers des moments d’échanges inoubliables.</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-vague-bleue section-proposer-avantage">
+  <%= image_tag "section-apropos-avantages-bg-top.png", width: "100%", class: "bg-top" %>
+  <div class="content">
+    <div class="section-content">
+      <h3 class="souligne droite gauche">Les avantages</h3>
+      <div class="flex">
+        <ul class="avantages">
+					<li>Nous vous accompagnons dans votre démarche de transmission de savoir-faire en vous offrant une plus grande visibilité et un support organisationnel.</li>
+					<li>Mettez en ligne vos ateliers en toute simplicité via votre compte créateur. Vous pourrez y administrer vos ateliers et visualiser vos ventes.</li>
+					<li>Pas d’engagement de durée ni d’exclusivité.</li>
+				</ul>
+        <ul class="avantages">
+					<li>Boostez votre stratégie de marque et votre communication à travers notre offre complémentaire d'accompagnement.</li>
+					<li>Développez une nouvelle clientèle. Nous vous mettons en relation avec des particuliers et entreprises qui souhaitent organiser des activités pour leurs événements.</li>
+					<li>Nous animons une communauté de créateurs favorisant l’échange et l’émergence d’opportunités.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <%= image_tag "section-apropos-avantages-bg-bottom.png", width: "100%", class: "bg-bottom", id: "bg-bottom-formule1" %>
+</section>
+
+<section class="section-proposer-inscription section-padding">
+  <div class="section-content">
+    <div class="flex">
+      <div class="picto-container">
+        <%= image_tag "picto-main.svg", width: "75" %>
+      </div>
+      <div class="double-colonne">
+        <h3 class="souligne droite">S'inscrire</h3>
+        <p>Inscrivez-vous gratuitement en remplissant notre formulaire et nous vous contacterons dans les plus brefs délais pour valider votre inscription.</p>
+        <p><b>Nous vous transmettrons ensuite le lien vers votre espace créateur pour que vous puissiez soumettre votre premier atelier.</b></p>
+        <div id="creator-contact-form">
+          <%= render "creator_contacts/form", creator_contact: CreatorContact.new %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

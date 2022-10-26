@@ -1,0 +1,20 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>404</h1>
+  </div>
+</section>
+
+<section class="section-apropos-valeurs section-padding">
+  <div class="section-content">
+    <div class="flex">
+      <div class="valeurs">
+        <center><%= image_tag "oups.svg", class: "visuel", style: "width: 80%" %></center></div>
+      <div class="suite double-colonne">
+
+        <p>La page que vous recherchez semble introuvable ! </p>
+        <%= link_to "Retourner à l'accueil", root_path, class: "btn-cta" %>
+        <%= link_to "Retourner aux ateliers", workshops_path, class: "btn-cta" %>
+      </div>
+    </div>
+  </div>
+</section>

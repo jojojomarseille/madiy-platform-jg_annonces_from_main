@@ -1,0 +1,84 @@
+<%= content_for :metas do %>
+  <meta name="turbolinks-cache-control" content="no-cache">
+<% end %>
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Les Ateliers</h1>
+  </div>
+</section>
+
+<section class="section-filtres-ateliers section-padding">
+  <div class="section-content">
+    <div class="grid">
+      <div class="select-container custom-select" data-default="Ville" data-controller="zone-select">
+        <select name="city" id="city" class="" aria-required="true" aria-invalid="false" data-target="zone-select.select" data-action="zone-select#onSelectChange">
+          <option value="" class="">Ville</option>
+          <% @zones.each do |zone| %>
+            <option value="<%= zone.id %>" class=""><%= zone.name %></option>
+          <% end %>
+        </select>
+        <button class="btn-reset-select"><%= image_tag "picto-close.svg", height: 14 %></button>
+      </div>
+      <div class="select-container" data-default="Date" data-controller="daterange-select">
+        <input type="text" name="daterange" placeholder="Date" value="Date" data-target="daterange-select.range" />
+        <button class="btn-reset-select"><%= image_tag "picto-close.svg", height: 14 %></button>
+      </div>
+      <div class="select-container" data-default="Tarifs" data-controller="price-select">
+        <input type="text" name="tarifrange" id="tarifrange" placeholder="Tarifs" data-target="price-select.range" />
+        <div class="slider-button">
+          <span>Tarif Entre</span>
+          <div class="slider-container" id="slider-container">
+            <div class="knob" id="knob1"><span id="min"></span></div>
+            <div class="knob" id="knob2"><span id="max"></span></div>
+            <div class="range"></div>
+          </div>
+        </div>
+        <button data-action="price-select#clear" class="btn-reset-select"><%= image_tag "picto-close.svg", height: 14 %></button>
+      </div>
+      <div class="select-container custom-select" data-default="Pour qui ?" data-controller="audience-select">
+        <select name="audience" id="audience" class="" aria-required="true" aria-invalid="false" data-target="audience-select.select" data-action="audience-select#onSelectChange">
+          <option value="" class="">Pour qui ?</option>
+          <option value="adult" class="">Adulte</option>
+          <option value="child" class="">Enfant</option>
+          <option value="adult_and_child" class="">Adulte + enfant</option>
+        </select>
+        <button class="btn-reset-select" data-action="audience-select#clearSelect"><%= image_tag "picto-close.svg", height: 14 %></button>
+      </div>
+    </div>
+    <div class="btn-categorie-container flex">
+      <% WorkshopCategory.joins(:workshops).distinct.find_each do |category| %>
+        <%= link_to workshops_path(q: {category_id_eq: category.id}), class: "btn-categorie #{category_css_class(category)}" do %>
+          <span class="puce"></span><span class="texte"><%= category.name %></span>
+        <% end %>
+      <% end %>
+
+      <% if @workshops.online.any? %>
+        <%= link_to workshops_path(q: {online_true: 1}), class: "btn-categorie cat-nature" do %>
+          <span class="puce"></span><span class="texte">En ligne</span>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="btn-categorie-container flex">
+      <small id="filters">
+        <% if params[:q].present? %>
+          <%= link_to "Réinitialiser les filtres", workshops_path, class: "btn-cta" %>
+        <% end %>
+      </small>
+    </div>
+  </div>
+</section>
+
+<section class="section-liste-ateliers section-padding">
+  <div class="section-content">
+    <div class="grid" id="workshops-grid">
+      <%= render @workshops %>
+    </div>
+    <div id="workshops-pagination">
+      <%= paginate @workshops %>
+    </div>
+  </div>
+</section>
+
+<script type="text/javascript">
+$('.menu-item-atelier').addClass('current');
+</script>

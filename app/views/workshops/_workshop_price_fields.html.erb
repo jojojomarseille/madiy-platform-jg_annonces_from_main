@@ -1,0 +1,14 @@
+<div class="nested-fields">
+  <%= f.hidden_field :_destroy %>
+  <div class="line line-tarif" style="margin: 10px">
+    <div class="select-container" style="min-width: 150px">
+      <%= f.select :category, WorkshopPrice.categories.map {|k,v| [I18n.t("activerecord.attributes.workshop_price.categories.#{k}"), v]} %>
+    </div>
+    <label for="input-montant">Montant&nbsp;:</label>
+    <%= f.text_field :price, :html=>{:class => "montant",  :id => "input-montant"}, :style => "width: 170px" %>
+    <label>€&nbsp;TTC</label>
+    <%= link_to '#' do %>
+      <%= image_tag('picto-close.svg', size: "25x25", alt: "supprimer", class: "remove_fields", style: "color: #0B3FC1; margin: 5px" )%>
+    <%end%>
+  </div>
+</div>

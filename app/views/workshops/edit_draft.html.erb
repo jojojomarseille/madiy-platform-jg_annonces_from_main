@@ -1,0 +1,31 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Mon compte créateur</h1>
+  </div>
+</section>
+<section class="section-titre section-padding">
+  <div class="section-content">
+    <header>
+      <h4>Retrouvez ici tout l’historique de vos ateliers et gérez les informations de votre profil</h4>
+    </header>
+  </div>
+</section>
+<section class="section-double-bouton section-logged section-padding">
+  <div class="section-content">
+    <div class="header flex">
+      <div class="button-no-js button-atelier selected" data-bloc="bloc-ateliers" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mes ateliers", "/workshops/index_creator/'#{current_creator.id}'" %>
+        </h4>
+      </div>
+      <div class="button-no-js button-profil " data-bloc="bloc-profil" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mon profil", "/creators/edit/#{current_creator.id}"%>
+        </h4>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section-creation-atelier section-padding">
+  <%= render 'workshop_form' %>
+</section>

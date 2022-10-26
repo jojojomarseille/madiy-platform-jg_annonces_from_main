@@ -1,0 +1,26 @@
+fr:
+  activerecord:
+    models:
+      cart:
+        one: Commande
+        other: Commandes
+      cart_item:
+        one: Contenu de panier
+        other: Contenus de panier
+    attributes:
+      cart:
+        user: Utilisateur
+        state: État
+        transaction_id: Référence Mangopay
+        reference: Numéro de commande
+        states:
+          picking: En cours
+          pending: Validation en cours
+          paid: Payée
+          failed: Erreur de paiement
+      cart_item:
+        cartable:
+          one: Produit
+          other: Produits
+        quantity: Quantité
+        price_cents: Montant

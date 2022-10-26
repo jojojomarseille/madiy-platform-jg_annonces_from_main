@@ -1,0 +1,10 @@
+fr:
+  activerecord:
+    models:
+      workshop_event_reminder:
+        one: Rappel de nouvel événement
+        other: Rappels de nouveaux événements
+    attributes:
+      workshop_event_reminder:
+        email: Email
+        workshop: Atelier

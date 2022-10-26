@@ -1,0 +1,56 @@
+fr:
+  activerecord:
+    models:
+      workshop:
+        one: Atelier
+        other: Ateliers
+      workshop_duration:
+        one: Durée de l'atelier
+        other: Durées des ateliers
+      workshop_event:
+        one: Date d'événement
+        other: Dates d'événements
+      workshop_price:
+        one: Tarif d'atelier
+        other: Tarifs d'ateliers
+    attributes:
+      workshop:
+        title: Titre
+        goal: Objectif
+        description: Description
+        more: Plus d'infos
+        audience: Pour
+        created_at: Créé le
+        updated_at: Modifié le
+        category: Catégorie
+        seats: Places
+        showcased: Du moment
+        creator: Créateur
+        visible: Visible
+        giftable: Offrable
+        hide_end_time: Masquer l'heure de fin
+        pictures: Photos
+        main_picture: Photo principale
+        online: En ligne
+        shipment: Kit à livrer
+
+      workshop_duration:
+        hours: Heures
+        minutes: Minutes
+
+      workshop_event:
+        start_time: Date et heure de début
+        end_time: Heure de fin
+        seats_left: Places restantes
+
+      workshop_price:
+        category:
+          one: Tarification
+          other: Tarifications
+        categories:
+          adult: Normal
+          child: Enfant
+          adult_and_child: "Adulte + Enfant"
+          reduced: Réduit
+        price: Prix
+        seats: Places

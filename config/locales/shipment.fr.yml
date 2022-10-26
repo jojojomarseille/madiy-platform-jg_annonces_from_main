@@ -1,0 +1,11 @@
+fr:
+  activerecord:
+    models:
+      shipment:
+        one: Livraison
+        other: Livraisons
+    attributes:
+      shipment:
+        cart: Commande liée
+        shipped: Livrée
+        click_and_collect: Click & collect

@@ -1,0 +1,29 @@
+fr:
+  activerecord:
+    models:
+      coupon:
+        one: Code promo
+        other: Codes promos
+      voucher:
+        one: Carte cadeau
+        other: Cartes cadeau
+    attributes:
+      voucher:
+        amount_cents: Montant
+        amount: Montant
+        from: De la part de
+        to: À destination de
+        message: Votre message
+        workshop: Atelier
+        percentage: Pourcentage
+        campaign: Campagne admin
+        valid_until: Date de validité
+        minimum_amount_cents: Minimum d'achat
+        minimum_amount: Minimum d'achat
+        max_uses: Nombre maximum d'utilisation (peu importe l'utilisateur)
+        max_uses_by_user: Nombre maximum d'utilisation par utilisateur
+        user: Utilisateur bénéficiaire
+        user_id: Utilisateur bénéficiaire
+      coupon:
+        token: Code
+        active: Actif

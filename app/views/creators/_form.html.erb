@@ -1,0 +1,91 @@
+<%= form_with model: @creator, method: :patch, local: true, class: "form-profil form-DIY", id: "form-profil" do |f| %>
+					<div class="line">
+					  <label for="input-prenom">Prénom&nbsp;:</label>
+                      <%= f.text_field :last_name, value: @creator.last_name %>
+					</div>
+					<div class="line">
+					  <label for="input-nom">Nom&nbsp;:</label>
+                      <%= f.text_field :first_name, value: @creator.first_name %>
+					</div>
+					<div class="line">
+					  <label for="input-mail">Mail&nbsp;:</label>
+                      <%= f.text_field :email, value: @creator.email %>
+					</div>
+					<div class="line">
+					  <label for="input-telephone">Téléphone&nbsp;:</label>
+                      <%= f.text_field :phone_number, value: @creator.phone_number %>
+					</div>
+					<div class="line">
+					  <label for="input-societe">Société&nbsp;:</label>
+                      <%= f.text_field :company, value: @creator.company %>
+					</div>
+					<div class="line">
+					  <label for="input-siret">SIRET&nbsp;:</label>
+                      <%= f.text_field :siret %>
+					</div>
+					<div class="line">
+					  <label for="input-siret">Statut juridique&nbsp;:
+					  	<a href="#" class="infobulle">
+                  			<div class="picto">i</div>
+                  			<span>Auto-entrepreneur : auto-entrepreneur, entreprise individuelle, EIRL, MDA AGESSA, collectivité territoriale, micro-entreprise...
+Société : SA, SAS, SASU, SARL, EURL..</span>
+                		</a>
+			  		  </label>
+					  </label>
+					  <%= f.select :legal_statut, Creator.legal_statuts.map {|key, value| [value, key]} %>
+					</div>
+					<div class="line">
+					  <label for="input-siret">Clic and collect&nbsp; <a href="#" class="infobulle">
+                        <div class="picto">i</div>
+                        <span> Pour vente de kit et ateliers en visio avec kit</span>
+                      </a>&nbsp;:</label>
+                      <%= f.check_box :click_and_collect, value: @creator.click_and_collect %>
+					</div>
+					<div class="line">
+					  <label for="input-siret">Soumis a TVA?&nbsp;:</label>
+                      <%= f.check_box :tva, value: @creator.tva %>
+					</div>
+			
+					<div class="line">
+					  <label for="input-siret">Numeros de TVA&nbsp;:</label>
+                      <%= f.text_field :tva_num, value: @creator.tva_num %>
+					</div>
+				    <h3>Ma bio</h3>
+					<div class="line">
+					  <label for="input-siret">Ma bio&nbsp;:</label>
+                      <%= f.text_area :bio, value: @creator.bio%>
+					</div>
+					
+					<div class="line">
+					  <label for="input-siret">Ma photo&nbsp;:</label>
+					</div>
+					<div class="line">
+					<%if @creator.picture.attached? %>
+					<%= image_tag @creator.picture.variant(:gravity=>"Center", resize: "200x200^", crop: '200x200+0+0'), class: "photo" %>
+					 <%# <%= image_tag @creator.picture, height:200, width:200 %>
+					<% end %>
+					</div>
+					<div class="line">
+					  <%= f.file_field :picture, onchange: "validateFiles(this);",
+                        data: { max_file_size: 2.megabytes } %>
+					</div>
+					<div class="line">
+					  <label for="input-siret">Facebook <a href="#" class="infobulle">
+                        <div class="picto">i</div>
+                        <span> Merci d'indiquer l'url complète</span>
+                      </a>&nbsp;:</label>
+                      <%= f.text_field :facebook, value: @creator.facebook %>
+					</div>
+					<div class="line">
+					  <label for="input-siret">instagram <a href="#" class="infobulle">
+                      <div class="picto">i</div>
+                      <span> Merci d'indiquer l'url complète</span>
+                      </a>&nbsp;:</label>
+                      <%= f.text_field :instagram, value: @creator.instagram %>
+					</div>
+					<div class="btn-container">
+						<%# <p class="messageErreur" id="messageErreur">Texte du message d'erreur et / ou confirmation</p> %>
+						<input type="submit" value="Enregistrer les modifications" class="btn-submit btn-cta" id="btn-submit" />
+					</div>
+				</form>		
+			<%end%>

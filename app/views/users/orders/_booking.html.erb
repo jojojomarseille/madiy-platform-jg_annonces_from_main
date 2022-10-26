@@ -1,0 +1,21 @@
+<div class="commande flex">
+  <div class="visuel">
+    <%= image_tag item.cartable.workshop_event.workshop.main_picture %>
+  </div>
+  <%= link_to workshop_path(item.cartable.workshop_event.workshop), class: "data" do %>
+    <h3><%= item.cartable.workshop_event.workshop.title %></h3>
+    <p class="date"><%= item.cart.paid_at ? l(item.cart.paid_at, format: :event) : l(item.cart.updated_at, format: :event) %></p>
+    <%= render "payment_state", state: item.cart.state %>
+  <% end %>
+  <ul class="actions">
+    <!--<li><a href="" class="btn-cta">Votre avis</a></li>-->
+    <li>
+      <%= link_to "En savoir +", workshop_path(item.cartable.workshop_event.workshop), class: "btn-cta", target: "_blank" %>
+    </li>
+    <% if item.cart.paid? %>
+      <li>
+        <%= link_to "Télécharger", booking_path(item.cartable, format: :pdf), class: "btn-cta", target: "_blank" %>
+      </li>
+    <% end %>
+  </ul>
+</div>

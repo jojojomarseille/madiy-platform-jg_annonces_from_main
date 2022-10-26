@@ -1,0 +1,40 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Mon compte</h1>
+  </div>
+</section>
+
+<section class="section-titre section-padding">
+  <div class="section-content">
+    <header>
+      <h4>Retrouvez ici toutes vos commandes récentes et gérez les informations de votre profil</h4>
+    </header>
+  </div>
+</section>
+
+<section class="section-double-bouton section-logged section-padding">
+  <div class="section-content">
+    <div class="header flex">
+      <div class="button-no-js button-atelier selected" data-bloc="bloc-commandes" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mes commandes", users_orders_path, data: { target: "link.link" } %>
+        </h4>
+      </div>
+
+      <div class="button-no-js button-profil" data-bloc="bloc-profil" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mon profil", edit_user_registration_path, data: { target: "link.link" } %>
+        </h4>
+      </div>
+    </div>
+    <div class="content">
+      <div class="bloc bloc-commandes current">
+        <div class="commandes-container">
+          <% @orders.each do |order| %>
+            <%= render order.cartable_type.underscore, item: order %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

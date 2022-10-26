@@ -1,0 +1,7 @@
+<div id="workshop_event<%= f.index %>" class="line line-date nested-fields nested-event form-add-event" style="padding-top: 10px; margin-bottom: 1em !important">
+  <%= f.hidden_field :_destroy %>
+  <%= f.datetime_select :start_time %>
+  <%= link_to '#' do %>
+    <%= image_tag('picto-close.svg', size: "25x25", alt: "supprimer", class: "remove_fields", style: "color: #0B3FC1; margin: 5px" )%>
+  <%end%>
+</div>

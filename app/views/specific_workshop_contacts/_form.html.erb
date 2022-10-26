@@ -1,0 +1,34 @@
+<%= form_with model: specific_workshop_contact, class: "form-inscription form-DIY" do |f| %>
+  <div class="line">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="line">
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+  </div>
+  <div class="line">
+    <%= f.label :phone_number %>
+    <%= f.text_field :phone_number %>
+  </div>
+  <div class="line">
+    <%= f.label :workshop_category %>
+    <%= f.text_field :workshop_category %>
+  </div>
+  <div class="line">
+    <%= f.label :seats %>
+    <%= f.text_field :seats %>
+  </div>
+  <div class="line line-textarea">
+    <%= f.label :message %>
+    <%= f.text_area :message %>
+  </div>
+  <div class="btn-container">
+    <% if specific_workshop_contact.errors.any? %>
+      <p class="messageErreur" id="messageErreur">
+        <%= specific_workshop_contact.errors.full_messages.to_sentence %>
+      </p>
+    <% end %>
+    <%= f.submit "Envoyer", class: "btn-submit btn-cta" %>
+  </div>
+<% end %>

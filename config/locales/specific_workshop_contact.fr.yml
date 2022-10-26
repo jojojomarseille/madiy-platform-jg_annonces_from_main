@@ -1,0 +1,14 @@
+fr:
+  activerecord:
+    models:
+      specific_workshop_contact:
+        one: Demande d'atelier clé en main
+        other: Demandes d'ateliers clé en main
+    attributes:
+      specific_workshop_contact:
+        name: Nom
+        email: Email
+        phone_number: Téléphone
+        workshop_category: Type d'événement
+        message: Votre message
+        seats: Nombre de personnes

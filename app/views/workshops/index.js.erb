@@ -1,0 +1,8 @@
+var html = "<%=j render @workshops %>";
+var filters = "<%=j link_to "Réinitialiser les filtres", workshops_path, class: "btn-cta" %>";
+var element = document.getElementById("workshops-grid");
+var pagination = "<%=j paginate @workshops %>";
+
+element.innerHTML = html;
+document.getElementById("filters").innerHTML = filters;
+document.getElementById("workshops-pagination").innerHTML = pagination;

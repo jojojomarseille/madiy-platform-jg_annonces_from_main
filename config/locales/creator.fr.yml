@@ -1,0 +1,19 @@
+fr:
+  activerecord:
+    models:
+      creator:
+        one: Créateur
+        other: Créateurs
+    attributes:
+      creator:
+        first_name: Prénom
+        last_name: Nom,
+        picture: Photo
+        phone_number: Téléphone
+        bio: Bio
+        website: Site
+        facebook: Page facebook
+        instagram: Compte instagram
+        password: Mot de passe
+        password_confirmation: Confirmation du mot de passe
+        click_and_collect: Permet de récupérer les kits en boutique

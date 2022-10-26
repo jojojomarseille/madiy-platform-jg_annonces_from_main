@@ -1,0 +1,15 @@
+fr:
+  activerecord:
+    models:
+      creator_contact:
+        one: Demande d'inscription créateur
+        other: Demandes d'inscription créateur
+    attributes:
+      creator_contact:
+        name: Nom
+        email: Email
+        phone_number: Téléphone
+        website: Site web
+        workshop_category: Thème des ateliers
+        city: Ville
+        message: Votre message

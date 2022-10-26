@@ -1,0 +1,35 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Livraison</h1>
+  </div>
+</section>
+
+<section class="section-recap-facturation section-padding">
+  <div class="section-content">
+    <p>
+      Commande de <%= @shipment.cart.user.first_name %> <%= @shipment.cart.user.last_name %> du <%= l @shipment.cart.paid_at, format: :short %> contenant :
+
+      <ul>
+        <% @shipment.shipment_lines.each do |shipment_line| %>
+          <li>
+            <%= shipment_line.shippable %> du <%= l(shipment_line.shippable.workshop_event.start_time.to_date) %>
+          </li>
+        <% end %>
+      </ul>
+    </p>
+
+    <p>
+      <% if @shipment.click_and_collect? %>
+        À récupérer sur place par le client.
+      <% else %>
+        À livrer à l'adresse :<br>
+        <strong><%= @shipment.address %></strong>
+      <% end %>
+    </p>
+
+    <p>
+      <% message = @shipment.click_and_collect? ? "Commande prête à être récupérée" : "Commande postée" %>
+      <%= link_to(message, shipment_path(@shipment, token: @shipment.token), class: "btn-cta", method: :put, data: { confirm: "Êtes-vous sûr ?" }) %>
+    </p>
+  </div>
+</section>

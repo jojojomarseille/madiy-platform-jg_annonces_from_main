@@ -1,0 +1,54 @@
+// $('body').addClass('home');
+
+<% helpers = ActionController::Base.helpers %>
+const pictoFlechePath = "<%= helpers.image_path('picto-fleche.svg') %>"
+function owlInitialize()
+{
+  $('.owl-header-home').owlCarousel({
+    items:1,
+    loop:true,
+    margin:0,
+    nav:true,
+    dots:false,
+    smartSpeed:1500,
+    autoplay:true,
+    autoplayTimeout:8000,
+    autoplayHoverPause:true,
+    navText: [
+      `<img src="${pictoFlechePath}" />`,
+      `<img src="${pictoFlechePath}" />`
+    ],
+    // responsive:{
+    // 	0:{items:1,nav:true,dots:true},
+    // 	480:{items:1,nav:false,dots:false}
+    // }
+  });
+  $('.owl-ateliers-home').owlCarousel({
+    items:3,
+    loop:true,
+    margin:15,
+    nav:true,
+    dots:false,
+    smartSpeed:1500,
+    autoplay:false,
+    autoplayTimeout:5000,
+    autoplayHoverPause:true,
+    navText: [
+      `<img src="${pictoFlechePath}" />`,
+      `<img src="${pictoFlechePath}" />`
+    ],
+    responsive:{
+      0:{items:1,nav:true,dots:false},
+      580:{items:2,nav:true,dots:false},
+      860:{items:3,nav:true,dots:false}
+    }
+  });
+}
+document.addEventListener("carousel:load", () => {
+  owlInitialize();
+});
+
+$(document).keydown(function(eventObject) {
+  if(eventObject.which==37) {$('.owl-prev').click();}
+  else if(eventObject.which==39) {$('.owl-next').click();}
+});

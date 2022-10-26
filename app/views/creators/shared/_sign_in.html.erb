@@ -1,0 +1,39 @@
+<section class="section-header-content">
+  <div class="section-content">
+	<h1>Mon compte créateur</h1>
+  </div>
+</section>
+
+<section class="section-login section-padding">
+  <div class="section-content">
+	<div class="form-container flex">
+	  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'form-connexion form-DIY' }) do |f| %>
+		<h3 class="souligne">accès à votre espace créateur</h3>
+		  <div class="line">
+			<%= f.label :email %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class:"mail" %>
+			  </div>
+			  <div class="line">
+			    <%= f.label :password %><br />
+                <%= f.password_field :password, autocomplete: "current-password" %>
+			  </div>
+			<div class="line checkbox-line">
+			  <% if devise_mapping.rememberable? %>
+			    <%= f.check_box :remember_me %>
+                <%= f.label :remember_me, "souvenez-vous de moi" %>
+			  <%end%>
+		    </div>
+			<div class="btn-container">
+			  <%= f.submit "Connexion", class:"btn-submit btn-cta" %>
+			</div>
+			 <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
+              <div class="line link-line">
+              <%= link_to "mot de passe oublié ?", new_password_path(resource_name) %><br />
+             </div>
+        <% end %>
+
+	  <% end %>
+
+	</div>
+  </div>
+</section>

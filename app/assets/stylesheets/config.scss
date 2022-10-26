@@ -1,0 +1,576 @@
+/*
+    Created on : 26 mai 2020, 16:00:00
+    Author     : tsautereau
+*/
+
+@import "utils.scss";
+
+/****************************************************************************/
+/* COULEURS
+/****************************************************************************/
+
+$blanc: #ffffff;
+$noir: #000000;
+$bleu1: #0b3fc1; // Bleu principal
+$bleu2: #dbe0f4;
+$bleu3: #002134;
+$bleu5: #b9c4ea;
+$bleu6: #6c83d2;
+$gris1: #e9e9e9;
+
+$jaune1: #ff8500; // Categorie Culinaire
+$bleu4: #56d8cf; // Categorie Bien-etre
+$vert1: #3ba66f; // Categorie Zero dechet
+$bleu1: $bleu1; // Categorie Nature
+$rose1: #f57184; // Categorie Textile
+$rose2: #ed4356; // Categorie Art
+$violet1: #8668c4; // Categorie Craft
+$jaune2: #fdac1c; // Categorie Home decor
+
+$gris2: #808080; // Statut brouillon
+$jaune2: #ff931e; // Statut soumis
+$vert1: #3ba66f; // Statut en ligne
+$gris3: #bdccd4; // Statut termine
+
+$mainColor: $bleu1;
+
+$max-width: 1200px;
+
+/****************************************************************************/
+/* RESPONSIVE BREAKPOINTS
+/****************************************************************************/
+
+$screen-lg: 1260px;
+$screen-md: 1024px;
+$screen-sm: 768px;
+$screen-xs: 480px;
+$screen-xxs: 360px;
+
+/****************************************************************************/
+/* INCLUDE FONTS
+/****************************************************************************/
+
+@font-face {
+  font-family: "Amatic";
+  src: font-url("AmaticSC-Bold.eot?#iefix") format("embedded-opentype"),
+    font-url("AmaticSC-Bold.woff") format("woff"),
+    font-url("AmaticSC-Bold.ttf") format("truetype"),
+    font-url("AmaticSC-Bold.svg#AmaticSC-Bold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+$amatic: "Amatic";
+
+@font-face {
+  font-family: "Montserrat";
+  src: font-url("Montserrat-Regular.eot?#iefix") format("embedded-opentype"),
+    font-url("Montserrat-Regular.woff") format("woff"),
+    font-url("Montserrat-Regular.ttf") format("truetype"),
+    font-url("Montserrat-Regular.svg#Montserrat-Regular") format("svg");
+  font-weight: 400; // Regular
+  font-style: normal;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: font-url("Montserrat-Medium.eot?#iefix") format("embedded-opentype"),
+    font-url("Montserrat-Medium.woff") format("woff"),
+    font-url("Montserrat-Medium.ttf") format("truetype"),
+    font-url("Montserrat-Medium.svg#Montserrat-Medium") format("svg");
+  font-weight: 500; // Medium
+  font-style: normal;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: font-url("Montserrat-SemiBold.eot?#iefix") format("embedded-opentype"),
+    font-url("Montserrat-SemiBold.woff") format("woff"),
+    font-url("Montserrat-SemiBold.ttf") format("truetype"),
+    font-url("Montserrat-SemiBold.svg#Montserrat-SemiBold") format("svg");
+  font-weight: 600; // Semi bold
+  font-style: normal;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: font-url("Montserrat-ExtraBold.eot?#iefix") format("embedded-opentype"),
+    font-url("Montserrat-ExtraBold.woff") format("woff"),
+    font-url("Montserrat-ExtraBold.ttf") format("truetype"),
+    font-url("Montserrat-ExtraBold.svg#Montserrat-SemiBold") format("svg");
+  font-weight: 800; // Extra bold
+  font-style: normal;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: font-url("Montserrat-Black.eot?#iefix") format("embedded-opentype"),
+    font-url("Montserrat-Black.woff") format("woff"),
+    font-url("Montserrat-Black.ttf") format("truetype"),
+    font-url("Montserrat-Black.svg#Montserrat-Black") format("svg");
+  font-weight: 900; // Black
+  font-style: normal;
+}
+$montserrat: "Montserrat";
+
+/****************************************************************************/
+/* TITRES et TEXTES
+/****************************************************************************/
+
+p {
+  font-family: $montserrat;
+  font-size: 0.875em;
+  font-weight: 500;
+  line-height: 1.75em;
+
+  @media screen and (max-width: $screen-xs) {
+    line-height: 1.25em;
+  }
+}
+
+a {
+  font-size: inherit;
+}
+
+h1 {
+  color: $mainColor;
+  text-transform: uppercase;
+
+  b,
+  strong {
+    font-weight: 900;
+  }
+
+  @media screen and (max-width: $screen-sm) {
+    font-size: 2em;
+  }
+  @media screen and (max-width: $screen-xs) {
+    font-size: 1.75em;
+  }
+}
+
+.titre-amatic {
+  font-size: 2.75em;
+  font-weight: normal;
+  font-family: $amatic;
+
+  @media screen and (max-width: $screen-xs) {
+    font-size: 2.25em;
+  }
+}
+
+h2 {
+  font-size: 2em;
+  font-weight: bold;
+  color: $mainColor;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0.5em 0;
+  padding: 0;
+
+  &:first-child {
+    margin-top: 0;
+    margin-bottom: 1.5em;
+  }
+
+  @media screen and (max-width: $screen-sm) {
+    font-size: 1.75em;
+  }
+}
+
+h3 {
+  font-size: 1.375em;
+  font-weight: bold;
+  letter-spacing: 1px;
+  &:not(.texte) {
+    color: $mainColor;
+    text-transform: uppercase;
+  }
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+h4 {
+  font-size: 1.25em;
+  font-weight: 800;
+  color: $bleu3;
+}
+
+/****************************************************************************/
+/* FORMULAIRE
+/****************************************************************************/
+
+form.form-DIY {
+  padding: 45px 0;
+  .line {
+    &:not(.line-check):not(.link-line) {
+      display: flex;
+    }
+    &:not(.line-textarea) {
+      align-items: center;
+    }
+    margin-bottom: 3em;
+    label {
+      font-size: 1em;
+      font-weight: 800;
+      color: $bleu3;
+      white-space: nowrap;
+      padding-right: 15px;
+      text-transform: uppercase;
+    }
+  }
+  .list-check {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    li {
+      flex: 1;
+      text-align: center;
+      input[type="radio"] {
+        display: none;
+      }
+      label {
+        display: inline-block !important;
+        cursor: pointer;
+        position: relative;
+        border: 2px solid $mainColor;
+        text-align: center;
+        min-width: 100px;
+        padding: 12px 40px;
+        letter-spacing: 0.3px;
+        @include animate(0.2s);
+        &:hover {
+          background-color: $bleu2;
+        }
+      }
+      input[type="radio"]:checked + label {
+        background-color: $mainColor;
+        color: white;
+      }
+    }
+  }
+  .checkbox-line {
+    input[type="checkbox"] {
+      display: none;
+    }
+    label {
+      display: inline-block;
+      text-transform: none;
+      color: $mainColor;
+      font-weight: 500;
+      cursor: pointer;
+      position: relative;
+      padding-left: 30px;
+      white-space: normal;
+    }
+  }
+  .checkbox-line label:before {
+    @include create-block(16px, 16px);
+    content: "";
+    @include border-radius(10px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: white;
+    border: 2px solid $bleu1;
+  }
+  .checkbox-line input[type="checkbox"]:checked + label:after {
+    @include create-block(12px, 12px);
+    content: "";
+    @include border-radius(10px);
+    background-color: $bleu1;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+  }
+  .link-line {
+    margin-top: 2em;
+    text-align: center;
+    a {
+      color: $bleu1;
+      font-weight: 500;
+      text-decoration: underline;
+    }
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    flex: 1;
+    border: none;
+    position: relative;
+    border-bottom: 1px solid $mainColor;
+    background-color: transparent; // Not so sure...
+    @include appearance(none);
+  }
+  textarea {
+    border: none;
+    background-color: $bleu2;
+    min-height: 120px;
+    padding: 5px;
+  }
+  .btn-container {
+    text-align: center;
+  }
+
+  @media screen and (max-width: $screen-sm) {
+    .line {
+      &,
+      &:not(.line-check):not(.link-line) {
+        display: block;
+      }
+    }
+    .list-check {
+      display: block;
+      li {
+        display: inline-block;
+        margin: 7px;
+        label {
+          padding: 12px 30px;
+        }
+      }
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+    }
+    textarea {
+      margin-top: 1em;
+    }
+    .btn-container {
+      text-align: left;
+    }
+  }
+  @media screen and (max-width: $screen-xs) {
+    .line {
+      flex-flow: column;
+      label {
+        margin-bottom: 7px;
+      }
+    }
+  }
+}
+
+/****************************************************************************/
+/* SELECTS
+/****************************************************************************/
+
+.select-container select,
+.select-container input[type="text"] {
+  display: block;
+  height: 38px;
+  line-height: 38px;
+  padding: 0 40px 0 5px;
+  border: 2px solid $mainColor;
+  background-color: white;
+  position: relative;
+  z-index: 3;
+  background-color: transparent;
+  width: 100%;
+  @include border-radius(0);
+  @include appearance(none);
+  option {
+    @include border-radius(0);
+  }
+}
+
+.select-container {
+  position: relative;
+  background-color: white;
+  &:not(.custom-select):after {
+    @include create-block(36px, 36px);
+    content: "";
+    background: $mainColor url(asset-path("picto-chevron-bas.svg")) center
+      center no-repeat;
+    background-size: 20px 11px;
+    position: absolute;
+    top: 1px;
+    right: 0px;
+    z-index: 2;
+  }
+  .btn-reset-select {
+    display: none;
+    position: absolute;
+    top: 12px;
+    right: 50px;
+    z-index: 3;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    @include border-radius(0);
+    @include appearance(none);
+  }
+}
+
+.select-container.custom-select {
+  .btn-arrow {
+    @include create-block(36px, 36px);
+    content: "";
+    background: $mainColor url(asset-path("picto-chevron-bas.svg")) center
+      center no-repeat;
+    background-size: 20px 11px;
+    position: absolute;
+    top: 1px;
+    right: 0px;
+    z-index: 2;
+  }
+}
+
+/****************************************************************************/
+/* CATEGORIES
+/****************************************************************************/
+
+.cat-culinaire {
+  $couleur: $jaune1;
+  @include cat-couleur($couleur);
+}
+.cat-bien-etre {
+  $couleur: $bleu4;
+  @include cat-couleur($couleur);
+}
+.cat-zero-dechet {
+  $couleur: $vert1;
+  @include cat-couleur($couleur);
+}
+.cat-nature {
+  $couleur: $bleu1;
+  @include cat-couleur($couleur);
+}
+.cat-textile {
+  $couleur: $rose1;
+  @include cat-couleur($couleur);
+}
+.cat-art {
+  $couleur: $rose2;
+  @include cat-couleur($couleur);
+}
+.cat-art-nature {
+  $couleur: $rose2;
+  @include cat-couleur($couleur);
+}
+.cat-craft {
+  $couleur: $violet1;
+  @include cat-couleur($couleur);
+}
+.cat-home-deco {
+  $couleur: $violet1;
+  @include cat-couleur($couleur);
+}
+
+.cat-neutre {
+  $couleur: var(--color);
+  @include cat-couleur($couleur);
+}
+
+/****************************************************************************/
+/* STATUT DES ATELIERS
+/****************************************************************************/
+
+.tous {
+  $couleur: $mainColor;
+  color: $couleur;
+  input[type="radio"]:checked + label:after {
+    background-color: $couleur;
+  }
+}
+.brouillon {
+  $couleur: $gris2;
+  color: $couleur;
+  input[type="radio"]:checked + label:after {
+    background-color: $couleur;
+  }
+}
+.soumis {
+  $couleur: $jaune2;
+  color: $couleur;
+  input[type="radio"]:checked + label:after {
+    background-color: $couleur;
+  }
+}
+.en.ligne,
+.enligne {
+  $couleur: $vert1;
+  color: $couleur;
+  input[type="radio"]:checked + label:after {
+    background-color: $couleur;
+  }
+}
+.termine {
+  $couleur: $gris3;
+  color: $couleur;
+  input[type="radio"]:checked + label:after {
+    background-color: $couleur;
+  }
+}
+
+/****************************************************************************/
+/* CUSTOM SELECT
+/****************************************************************************/
+
+.custom-select {
+  position: relative;
+}
+
+.custom-select select {
+  display: none;
+} //hide original SELECT element:
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div,
+.select-selected {
+  color: white;
+  padding: 0 5px;
+  height: 38px;
+  line-height: 34px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+}
+
+.select-selected {
+  border: 2px solid $bleu1;
+  padding: 0 40px 0 5px;
+  height: 38px;
+  line-height: 34px;
+  color: $bleu3;
+}
+
+/* Style items (options): */
+.select-items {
+  position: absolute;
+  background-color: $bleu1;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover,
+.same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}

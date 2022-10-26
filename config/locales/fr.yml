@@ -1,0 +1,50 @@
+fr:
+  date:
+    formats:
+      event: "%A %d %B"
+  time:
+    formats:
+      event: "%A %d %B %Hh%M"
+
+  vouchers:
+    create:
+      success: Carte cadeau ajoutée au panier
+
+  payments:
+    create:
+      success: Votre commande a bien été passée, nous procédons à la validation du paiement.
+
+  no_payments:
+    create:
+      success: Votre commande a bien été validée.
+
+  newsletter_members:
+    create:
+      success: Inscription sur notre liste effectuée
+
+  creator_contacts:
+    create:
+      success: Votre demande d'inscription a bien été prise en compte
+
+  specific_workshop_contacts:
+    create:
+      success: Votre demande d'atelier clé en main a bien été prise en compte
+
+  bookings:
+    create:
+      success: Réservation(s) ajoutée(s) au panier
+
+  workshop_event_reminders:
+    create:
+      success: Nous vous avertirons dès qu'une nouvelle date sera entrée
+
+  discounts:
+    create:
+      success: Code promo appliqué au panier
+
+  views:
+    pagination:
+      first: Première
+      last: Dernière
+      next: Suivant
+      previous: Précédent

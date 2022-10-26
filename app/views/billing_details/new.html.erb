@@ -1,0 +1,24 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Récapitulatif de commande</h1>
+  </div>
+</section>
+
+<section class="section-breadcrumb section-padding">
+  <div class="section-content">
+    <ol>
+      <li>
+        <%= link_to "Panier", carts_path %>
+      </li>
+      <li>Connexion</li>
+      <li class="current">Récapitulatif</li>
+      <li>Paiement</li>
+    </ol>
+  </div>
+</section>
+
+<section class="section-recap-facturation section-padding">
+  <div class="section-content" id="billing-detail-form">
+    <%= render "form" %>
+  </div>
+</section>

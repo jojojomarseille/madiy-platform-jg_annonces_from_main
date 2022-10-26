@@ -1,0 +1,15 @@
+fr:
+  activerecord:
+    models:
+      user:
+        one: Utilisateur
+        other: Utilisateurs
+    attributes:
+      user:
+        first_name: Prénom
+        last_name: Nom
+        email: Email
+        password: Mot de passe
+        password_confirmation: Confirmation
+        birthday: Date de naissance
+        newsletter_member: Inscrit à la newsletter

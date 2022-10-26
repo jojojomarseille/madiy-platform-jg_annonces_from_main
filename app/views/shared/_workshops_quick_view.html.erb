@@ -1,0 +1,10 @@
+<section class="section-liste-ateliers section-background-liste section-padding">
+  <div class="section-content">
+    <h2><%= title %></h2>
+    <div class="owl-carousel owl-ateliers-home" data-controller="showcases" data-showcases-url="<%= showcases_path %>">
+    </div>
+    <div class="cta-container">
+      <%= link_to "Voir plus", workshops_path, class: "btn-cta" %>
+    </div>
+  </div>
+</section>

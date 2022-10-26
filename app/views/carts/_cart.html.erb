@@ -1,0 +1,42 @@
+<table class="table-pannier">
+  <% @cart.cart_items.each do |cart_item| %>
+    <%= render "carts/#{cart_item.cartable_type.underscore}", item: cart_item %>
+  <% end %>
+  <% if @cart.discount.present? %>
+    <tr>
+      <td colspan="2"></td>
+      <td class="titre" colspan="3">
+        <h3>Code promo d'une valeur de <%= short_number_to_currency(Money.new(@cart.discount.amount_cents)) %></h3>
+      </td>
+      <td class="prix-total center"><h2>-<%= short_number_to_currency(Money.new(@cart.discount.amount_cents)) %></h2></td>
+    </tr>
+
+  <% end %>
+  <tr class="footer">
+    <td colspan="4" class="promo">
+      <%= form_with scope: :discount, url: discounts_path, class: "form-code-promo" do |f| %>
+        <% if @discount_errors %>
+          <p class="messageErreur" id="messageErreur"><%= @discount_errors.to_sentence %></p>
+        <% end %>
+        <div class="flex">
+          <%= f.text_field :token, placeholder: "Votre code promo / cadeau" %>
+          <%= f.submit "Appliquer", class: "btn-apply-promo btn-cta" %>
+        </div>
+      <% end %>
+    </td>
+    <td class="right">Total TTC</td>
+    <td>
+      <h2>
+        <%= short_number_to_currency(Money.new(@cart.amount_cents)) %>
+      </h2>
+    </td>
+  </tr>
+</table>
+
+<% if @cart.cart_items.any? %>
+  <%= link_to "Valider la commande", new_billing_detail_path, class: "btn-cta btn-valider" %>
+<% else %>
+  <div  class="empty-cart">
+    <%= link_to "Votre panier est vide. Rendez-vous sur la liste des ateliers pour trouver votre bonheur ! ", workshops_path, class: "btn-cta" %>
+  </div>
+<% end %>

@@ -1,0 +1,18 @@
+fr:
+  activerecord:
+    models:
+      billing_detail:
+        one: Informations de facturation
+        other: Informations de facturation
+    attributes:
+      billing_detail:
+        first_name: Prénom
+        last_name: Nom
+        company: Société
+        phone_number: Téléphone
+        terms: J'ai lu et j'accepte les conditions générales de vente
+
+      billing_detail/user/address:
+        city: Ville de livraison
+        street: Adresse de livraison
+        postal_code: Code postal de livraison

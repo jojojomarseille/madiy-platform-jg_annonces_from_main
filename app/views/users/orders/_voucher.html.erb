@@ -1,0 +1,27 @@
+<div class="commande flex">
+  <div class="visuel">
+    <% if item.cartable.workshop.present? %>
+      <%= image_tag item.cartable.workshop.main_picture %>
+    <% else %>
+      <%= image_tag "cadeau.svg", height: "150px"%>
+    <% end %>
+  </div>
+  <div class="data">
+    <h3>
+      <% if item.cartable.workshop.present? %>
+        Bon cadeau pour l'atelier "<%= item.cartable.workshop.title %>"
+      <% else %>
+        Bon cadeau d'une valeur de <%= short_number_to_currency(Money.new(item.cartable.amount_cents)) %>
+      <% end %>
+    </h3>
+    <p class="date"><%= item.cart.paid_at ? l(item.cart.paid_at, format: :event) : l(item.cart.updated_at, format: :event) %></p>
+    <%= render "payment_state", state: item.cart.state %>
+  </div>
+  <ul class="actions">
+    <!--<li><a href="" class="btn-cta">Votre avis</a></li>-->
+    <!--<li><a href="" class="btn-cta">En savoir +</a></li>-->
+    <% if item.cart.paid? %>
+      <%= link_to "Télécharger", voucher_path(item.cartable, format: :pdf), class: "btn-cta", target: "_blank" %>
+    <% end %>
+  </ul>
+</div>

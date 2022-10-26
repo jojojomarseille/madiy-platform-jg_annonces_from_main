@@ -1,0 +1,458 @@
+/*
+  Created on : 26 mai 2020, 16:00:00
+  Author     : tsautereau
+*/
+
+@mixin centered {
+  left: 0px;
+  right: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@mixin vertical-align($value: 50%) {
+  top: $value;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+@mixin horizontal-align($value: 50%) {
+  left: $value;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+@mixin remove-vertical-align {
+  top: auto;
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+}
+
+@mixin box-sizing {
+  // box-sizing: border-box;	-webkit-box-sizing: border-box;	-moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+@mixin animate($time: 0.3s) {
+  -webkit-transition: all $time ease-in-out 0s;
+  -moz-transition: all $time ease-in-out 0s;
+  -ms-transition: all $time ease-in-out 0s;
+  -o-transition: all $time ease-in-out 0s;
+  transition: all $time ease-in-out 0s;
+}
+
+@mixin opacity($value) {
+  $valueIE: $value * 100;
+  opacity: $value;
+  filter: alpha(opacity= $valueIE);
+}
+
+@mixin border-radius($value: 15px) {
+  -webkit-border-radius: $value;
+  -moz-border-radius: $value;
+  border-radius: $value;
+  behavior: url("../css/PIE.php");
+}
+
+@mixin create-block($width, $height, $display: block) {
+  display: $display;
+  width: $width;
+  height: $height;
+}
+
+@mixin create-circle($size, $color) {
+  display: block;
+  width: $size + px;
+  height: $size + px;
+  background-color: $color;
+  @include border-radius(#{$size/2}px);
+}
+
+@mixin paddingLR($size: 15px) {
+  padding-left: $size;
+  padding-right: $size;
+}
+
+@mixin shadow($color: #222, $strenght: 7px) {
+  -webkit-box-shadow: 0px 0px $strenght 0px $color;
+  -moz-box-shadow: 0px 0px $strenght 0px $color;
+  -o-box-shadow: 0px 0px $strenght 0px $color;
+  box-shadow: 0px 0px $strenght 0px $color;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color=$color, Direction=NaN, Strength=7);
+}
+
+@mixin removeShadow {
+  -moz-box-shadow: 0px 0px 0px 0px transparent;
+  -webkit-box-shadow: 0px 0px 0px 0px transparent;
+  -o-box-shadow: 0px 0px 0px 0px transparent;
+  box-shadow: 0px 0px 0px 0px transparent;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color=transparent, Direction=NaN, Strength=0);
+}
+
+@mixin rotate($angle) {
+  transform: rotate($angle);
+  -ms-transform: rotate($angle); /* Internet Explorer */
+  -moz-transform: rotate($angle); /* Firefox */
+  -webkit-transform: rotate($angle); /* Safari et Chrome */
+  -o-transform: rotate($angle); /* Opera */
+}
+
+@mixin grayscale {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+@mixin scale($value) {
+  transform: scale($value);
+  -o-transform: scale($value);
+  -moz-transform: scale($value);
+  -webkit-transform: scale($value);
+}
+
+@mixin appearance($value: none) {
+  -webkit-appearance: $value;
+  -moz-appearance: $value;
+  -ms-appearance: $value;
+  -o-appearance: $value;
+  appearance: $value;
+}
+
+@mixin flip {
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+
+@mixin shadow-box {
+  background-color: white;
+  border: 1px solid $gris6;
+  @include animate(0.2s);
+  @include shadow(rgba(0, 0, 0, 0), 0);
+  &:hover {
+    @include shadow(rgba(0, 0, 0, 0.1), 7px);
+  }
+}
+
+@mixin remove-top-bottom-margin {
+  *:first-child {
+    margin-top: 0;
+  }
+  *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@mixin grid-3-colonnes {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 15px;
+  grid-auto-rows: minmax(200px, auto);
+  // -ms-grid-rows: 1fr;
+  .double-colonne {
+    grid-row: 2 / 4;
+  }
+}
+
+@mixin grid-4-colonnes {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 15px;
+  grid-auto-rows: minmax(200px, auto);
+  // -ms-grid-rows: 1fr;
+  .double-colonne {
+    grid-row: 2 / 4;
+  }
+}
+
+@mixin bloc-cta {
+  border: 2px solid $mainColor;
+  background-color: white;
+  padding: 20px 30px 20px 15px;
+  align-items: center;
+  &:not(:first-child) {
+    margin-top: 1em;
+  }
+  figure {
+    flex: 0 0 70px;
+    text-align: center;
+  }
+  .texte {
+    flex: 100% 0 1;
+    padding: 0 15px;
+    color: $mainColor;
+    font-weight: 500;
+  }
+  .btn-cta {
+    flex: 0 0 130px;
+    text-align: center;
+    figure {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: $screen-md) {
+    display: inline-block;
+    border: none;
+    padding: 0;
+    .texte {
+      display: none;
+    }
+    figure,
+    .btn-cta {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    figure {
+      margin-right: 15px;
+      img {
+        height: 50px;
+      }
+    }
+    .btn-cta {
+      figure {
+        display: inline-block;
+      }
+      &:hover {
+        background-color: white;
+        color: $bleu1;
+      }
+    }
+    & > figure {
+      display: none;
+    }
+    &:not(:first-child) {
+      margin-top: 0;
+      margin-left: 30px;
+    }
+  }
+  @media screen and (max-width: $screen-sm) {
+    .btn-cta {
+      min-width: 130px;
+      padding: 0.5em 1em;
+      figure {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+@mixin colonnes {
+  justify-content: space-between;
+  margin: 0 -30px;
+  .colonne {
+    flex: 0 0 calc(50% - 30px);
+    max-width: 50%;
+    padding: 30px;
+    .bloc {
+      &:not(:first-child) {
+        margin-top: 3em;
+      }
+      *:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@mixin cat-couleur($couleur) {
+  color: $couleur;
+  &.item-atelier {
+    .visuel:after {
+      border-color: transparent $couleur transparent transparent;
+    }
+    .categorie {
+      background-color: $couleur;
+    }
+    &:hover {
+      .content h3 {
+        color: $couleur;
+      }
+    }
+  }
+  &.btn-categorie {
+    .puce {
+      background-color: $couleur;
+    }
+    .texte {
+      color: $couleur;
+    }
+  }
+  input[type="radio"]:checked + label:after {
+    background-color: $couleur;
+  }
+}
+
+@mixin photo-container {
+  min-width: 294px;
+  height: auto;
+  margin-left: 60px;
+  position: relative;
+  &:before {
+    @include create-block(294px, 283.5px);
+    content: "";
+    background: transparent url(asset-path("picto-cercle-grand.svg")) center
+      center no-repeat;
+    background-size: cover;
+    position: absolute;
+    top: -30px;
+    right: -30px;
+  }
+  .photo {
+    width: 294px;
+    overflow: hidden;
+    @include border-radius(150px);
+  }
+}
+
+@mixin check-date {
+  flex-wrap: wrap;
+  justify-content: initial;
+  li {
+    flex: initial;
+    &:not(:last-child) {
+      margin: 0 15px 15px 0;
+    }
+    input[type="radio"] {
+      display: none;
+    }
+    label {
+      display: block;
+      padding: 5px 15px;
+      font-size: 0.938em;
+      text-transform: none;
+      font-weight: 500;
+      color: white;
+      border-color: white;
+      background-color: $bleu5;
+      border: 2px solid;
+      cursor: pointer;
+      @include animate(0.2s);
+    }
+    input[type="radio"]:checked + label {
+      background-color: transparent;
+      color: $mainColor;
+      border-color: $mainColor;
+      font-style: italic;
+    }
+  }
+}
+
+@mixin compteur {
+  align-items: center;
+  label {
+    text-transform: none;
+    font-size: 1em;
+    flex: 0 0 150px;
+    padding: 0;
+  }
+  button {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    width: 30px;
+    text-align: center;
+  }
+  input[type="number"],
+  input[type="text"] {
+    border: 2px solid $mainColor;
+    background-color: transparent;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    max-width: 60px;
+    -moz-appearance: textfield !important;
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  span {
+    padding-left: 15px;
+  }
+  &:not(:first-child) {
+    margin-top: 1em;
+  }
+}
+
+@mixin liste-numerotee {
+  margin: 0;
+  padding: 0;
+  counter-reset: item;
+  list-style: none;
+  text-transform: uppercase;
+  li {
+    position: relative;
+    padding-left: 60px;
+    & > * {
+      vertical-align: middle;
+    }
+    &:before {
+      display: inline-block;
+      content: counter(item);
+      counter-increment: item;
+      color: $mainColor;
+      font-size: 1.125em;
+      font-weight: 800;
+      position: absolute;
+      left: 10px;
+      top: 6px;
+    }
+    &:after {
+      @include create-block(31px, 33px);
+      content: "";
+      background: transparent url(asset-path("picto-cercle-petit.svg")) center
+        center no-repeat;
+      background-size: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+}
+
+@mixin radio-button {
+  input[type="radio"] {
+    display: none;
+  }
+  label {
+    text-transform: none;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    padding-left: 30px;
+    &:before {
+      @include create-block(16px, 16px);
+      content: "";
+      @include border-radius(10px);
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: white;
+      border: 2px solid;
+    }
+  }
+  input[type="radio"]:checked + label:after {
+    @include create-block(12px, 12px);
+    content: "";
+    @include border-radius(10px);
+    position: absolute;
+    top: 4px;
+    left: 4px;
+  }
+}

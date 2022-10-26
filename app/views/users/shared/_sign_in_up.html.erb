@@ -1,0 +1,102 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Mon compte</h1>
+  </div>
+</section>
+
+<section class="section-login section-padding">
+  <div class="section-content">
+    <div class="form-container flex">
+
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'form-connexion form-DIY' }) do |f| %>
+        <h3 class="souligne">Connexion </h3>
+
+        <div class="line">
+          <%= f.label :email %>
+          <%= f.email_field :email, class: 'mail' %>
+        </div>
+
+        <div class="line">
+          <%= f.label :password %>
+          <%= f.password_field :password, class: 'mdp' %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="line checkbox-line">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me, 'se souvenir de moi' %>
+          </div>
+        <% end %>
+
+        <div class="btn-container">
+          <%= f.submit 'Connexion', class: 'btn-submit btn-cta' %>
+        </div>
+
+        <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
+          <div class="line link-line">
+            <%= link_to "mot de passe oublié ?", new_password_path(resource_name) %><br />
+          </div>
+        <% end %>
+      <% end %>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'form-compte form-DIY' }) do |f| %>
+        <%= f.invisible_captcha :nique_nayme %>
+
+        <h3 class="souligne">Créer un compte</h3>
+        <div class="line">
+          <%= f.label :first_name %>
+          <%= f.text_field :first_name, class: 'prenom' %>
+        </div>
+
+        <div class="line">
+          <%= f.label :last_name %>
+          <%= f.text_field :last_name, class: 'nom big' %>
+        </div>
+
+        <div class="line">
+          <%= f.label :birthday %>
+          <%= f.date_select :birthday, start_year: 1900 %>
+        </div>
+
+        <div class="line">
+          <%= f.label :email %>
+          <%= f.email_field :email, class: 'mail', autocomplete: "email" %>
+        </div>
+
+        <div class="line">
+          <%= f.label :password %>
+          <%= f.password_field :password, class: 'mdp', autocomplete: "new-password" %>
+        </div>
+
+        <div class="line">
+          <%= f.label :password_confirmation %>
+          <%= f.password_field :password_confirmation, class: 'mdp', autocomplete: "new-password" %>
+        </div>
+
+        <div class="line checkbox-line">
+          <%= f.check_box :newsletter_member %>
+          <%= f.label :newsletter_member, "recevoir la newsletter" %>
+        </div>
+
+        <div class="btn-container">
+          <% if resource.errors.any? %>
+            <% resource.errors.full_messages.each do |message| %>
+              <p class="messageErreur" id="messageErreur">
+                <%= message %>
+              </p>
+            <% end %>
+          <% end %>
+          <%= f.submit "S'inscrire", class: 'btn-submit btn-cta' %>
+        </div>
+      <% end %>
+    </div>
+
+    
+    <div class="bloc-goto-login-createur">
+      <h3>Vous êtes créateur / maker / animateur</h3>
+      <a href="../creators/sign_in" class="btn-cta">Connectez-vous ici</a>
+    </div>
+    
+  </div>
+</section>

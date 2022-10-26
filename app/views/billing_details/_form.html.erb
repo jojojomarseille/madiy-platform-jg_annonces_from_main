@@ -1,0 +1,136 @@
+<%= form_with model: @billing_detail, class: "form-facturation form-DIY flex" do |f| %>
+  <div class="colonne colonne1">
+    <h3 class="souligne">Détails de facturation</h3>
+    <div class="line">
+      <%= f.label :first_name %>
+      <%= f.text_field :first_name, value: current_user.first_name %>
+    </div>
+
+    <div class="line">
+      <%= f.label :last_name %>
+      <%= f.text_field :last_name, value: current_user.last_name %>
+    </div>
+
+    <div class="line">
+      <%= f.label :phone_number %>
+      <%= f.text_field :phone_number %>
+    </div>
+
+    <div class="line">
+      <%= f.label :company %>
+      <%= f.text_field :company %>
+    </div>
+
+    <%= f.fields_for :address do |f_a| %>
+      <div class="line">
+        <%= f_a.label :street %>
+        <%= f_a.text_field :street %>
+      </div>
+
+      <div class="line">
+        <%= f_a.label :postal_code %>
+        <%= f_a.text_field :postal_code %>
+      </div>
+
+      <div class="line">
+        <%= f_a.label :city %>
+        <%= f_a.text_field :city %>
+      </div>
+    <% end %>
+
+    <% if @cart.shipments? %>
+      <%= f.fields_for :user do |f_u| %>
+        <h3 class="souligne">Mode de livraison</h3>
+        <% if @cart.shipments_with_click_and_collect? %>
+          <div data-controller="shipment">
+            <div class="line">
+              <input type="radio" id="click_and_collect" name="billing_detail[shipping_mode]" value="click_and_collect" <%= ["click_and_collect", nil].include?(f.object.shipping_mode) ? "checked" : nil %> data-target="shipment.options" data-action="shipment#onChange">&nbsp;
+              <label for="click_and_collect">Click & Collect</label>
+
+              <input type="radio" id="shipping" name="billing_detail[shipping_mode]" value="shipping" <%= f.object.shipping_mode == "shipping" ? "checked" : nil %> data-target="shipment.options" data-action="shipment#onChange">&nbsp;
+              <label for="shipping">Livraison</label>
+
+              <template data-target="shipment.shippingForm">
+                <%= f_u.fields_for :address do |f_u_a| %>
+                  <%= render "shipping_address_form", f: f_u_a %>
+                <% end %>
+              </template>
+
+              <template data-target="shipment.creatorAddress">
+                <p>
+                  Venez retirer votre kit à l'adresse suivante :<br>
+                  <%= @cart.shipments_with_click_and_collect.workshop.address %>
+                </p>
+              </template>
+            </div>
+
+            <div data-target="shipment.output"></div>
+          </div>
+        <% else %>
+          <%= f_u.fields_for :address do |f_u_a| %>
+            <%= render "shipping_address_form", f: f_u_a %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <%= f.hidden_field :shipping_mode, value: "no_shipping" %>
+    <% end %>
+
+    <!--<div class="line checkbox-line">
+      <input type="checkbox" id="chk-adresse2" name="adresse2">
+        <label for="chk-adresse2">Expédier à une adresse différente</label>
+    </div>-->
+  </div>
+  <div class="colonne colonne2">
+    <div class="bloc-reservation">
+      <h3 class="souligne">Votre réservation</h3>
+      <table class="table-reservations">
+        <% @cart.cart_items.each do |cart_item| %>
+          <%= render "billing_details/#{cart_item.cartable_type.underscore}", item: cart_item %>
+        <% end %>
+
+        <% if @cart.discount.present? %>
+          <tr>
+            <td>
+              <h4>
+                Code promo d'une valeur de <%= short_number_to_currency(Money.new(@cart.discount.amount_cents)) %>
+              <h4>
+            </td>
+
+            <td class="type strong" style="text-align: right"></td>
+            <td class="center">
+              <h4>
+                -<%= short_number_to_currency(Money.new(@cart.discount.amount_cents)) %>
+              </h4>
+            </td>
+          </tr>
+
+        <% end %>
+
+        <tr class="footer">
+          <td></td>
+          <td class="right">Total TTC</td>
+          <td class="center">
+            <h3>
+              <%= short_number_to_currency(Money.new(@cart.amount_cents)) %>
+            </h3>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="bloc-cta">
+      <div class="line checkbox-line cgv-radio">
+        <%= f.check_box :terms %>
+        <%= f.label :terms %>
+      </div>
+      <p class="cgv-link"><%= link_to "Lire les CGVs", page_path("cgv"), target: "_blank" %></p>
+
+      <% if @billing_detail.errors.any? %>
+        <p class="messageErreur" id="messageErreur">
+          <%= @billing_detail.errors.full_messages.to_sentence %>
+        </p>
+      <% end %>
+      <%= f.submit "Payer", class: "btn-cta btn-paye" %>
+    </div>
+  </div>
+<% end %>

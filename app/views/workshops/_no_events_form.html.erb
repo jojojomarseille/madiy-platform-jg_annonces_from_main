@@ -1,0 +1,35 @@
+<%= form_with scope: nil,
+  url: new_voucher_path,
+  method: :get,
+  class: "form-reservation-atelier form-DIY" do |f| %>
+
+  <%= f.hidden_field :workshop_id, value: workshop.id %>
+
+  <div class="line line-check">
+    <label for="list-check">Dates&nbsp;:</label>
+    <p>
+      Aucune date n’est disponible pour le moment pour cet atelier. Votre créateur vous proposera une date très prochainement. Nous pouvons vous tenir au courant dès qu'une date est disponible en remplissant le formulaire ci-dessous.
+      <% if workshop.giftable? %>
+        En attendant faites vous plaisir ou à vos proches en offrant un bon cadeau pour cet atelier, une belle manière de soutenir le travail de vos créateurs locaux.
+      <% end %>
+    </p>
+  </div>
+
+  <% if workshop.giftable? %>
+    <div class="line line-compteur">
+      <label>Offrir&nbsp;:</label>
+      <% workshop.prices.order(:price_cents).last.tap do |price| %>
+        <div class="compteur flex">
+          <label for=""><%= t("activerecord.attributes.workshop_price.categories.#{price.category}") %> <i>(<%= short_number_to_currency(price.price) %>)</i></label>
+        </div>
+      <% end %>
+      <div class="prix"></div>
+    </div>
+    <div class="btn-container">
+      <%= link_to new_voucher_path(workshop_id: workshop.id, anchor: "form-target"), class: "btn-submit btn-cta", type: :submit do %>
+        <%= image_tag "picto-cadeau-bleu.svg", height: "25px" %> Offrir
+      <% end %>
+    </div>
+  <% end %>
+
+<% end %>

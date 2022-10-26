@@ -1,0 +1,85 @@
+<section class="section-header-content">
+  <div class="section-content">
+    <h1>Mon compte</h1>
+  </div>
+</section>
+
+<section class="section-titre section-padding">
+  <div class="section-content">
+    <header>
+      <h4>Retrouvez ici toutes vos commandes récentes et gérez les informations de votre profil</h4>
+      <%= link_to "Déconnexion", destroy_user_session_path, method: :delete, class: "btn-cta" %>
+    </header>
+  </div>
+</section>
+
+<section class="section-double-bouton section-logged section-padding">
+  <div class="section-content">
+    <div class="header flex">
+      <div class="button-no-js button-atelier" data-bloc="bloc-commandes" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mes commandes", users_orders_path, data: { target: "link.link" } %>
+        </h4>
+      </div>
+
+      <div class="button-no-js button-profil selected" data-bloc="bloc-profil" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mon profil", edit_user_registration_path, data: { target: "link.link" } %>
+        </h4>
+      </div>
+    </div>
+    <div class="content">
+      <div class="bloc bloc-profil current">
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'form-profil form-DIY' }) do |f| %>
+          <div class="line">
+            <%= f.label :first_name %>
+            <%= f.text_field :first_name, class: 'prenom' %>
+          </div>
+
+          <div class="line">
+            <%= f.label :last_name %>
+            <%= f.text_field :last_name, class: 'nom big' %>
+          </div>
+
+          <div class="line">
+            <%= f.label :birthday %>
+            <%= f.date_select :birthday, start_year: 1900 %>
+          </div>
+
+          <div class="line">
+            <%= f.label :email %>
+            <%= f.email_field :email, class: 'mail', autocomplete: "email" %>
+          </div>
+
+          <h3>Changement de mot de passe</h3>
+
+          <div class="line">
+            <%= f.label :current_password %>
+            <%= f.password_field :current_password, autocomplete: "current-password" %>
+          </div>
+
+          <div class="line">
+            <%= f.label :password %>
+            <%= f.password_field :password, class: 'mdp', autocomplete: "new-password" %>
+          </div>
+
+          <div class="line">
+            <%= f.label :password_confirmation %>
+            <%= f.password_field :password_confirmation, class: 'mdp', autocomplete: "new-password" %>
+          </div>
+
+          <div class="btn-container">
+            <% if resource.errors.any? %>
+              <% resource.errors.full_messages.each do |message| %>
+                <p class="messageErreur" id="messageErreur">
+                  <%= message %>
+                </p>
+              <% end %>
+            <% end %>
+            <%= f.submit "Enregistrer les modifications", class: 'btn-submit btn-cta' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

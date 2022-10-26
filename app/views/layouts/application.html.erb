@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+   <head>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <meta name="title" content="Mes Ateliers DIY" />
+    <meta name="description" content="Billetterie en ligne d'ateliers créatifs. Développez votre créativité auprès des créateurs de votre région. Choisissez un atelier sur notre site parmi de nombreux thèmes, initiez vous aux savoir-faire de créateurs de votre région et repartez avec votre création personnalisée à la fin de l’atelier !">
+    <meta name="Keywords" content="Mes Ateliers DIY" />
+    <%= content_for :metas %>
+
+    <meta property="og:title" content="Mes Ateliers DIY" />
+    <meta property="og:site_name" content="Mes Ateliers DIY" />
+    <meta property="og:description" content="Billetterie en ligne d'ateliers créatifs. Développez votre créativité auprès des créateurs de votre région. Choisissez un atelier sur notre site parmi de nombreux thèmes, initiez vous aux savoir-faire de créateurs de votre région et repartez avec votre création personnalisée à la fin de l’atelier !" />
+    <meta property="og:image" content="<%= image_url "share_image.png" %>" />
+    <meta property="og:image:secure_url" content="<%= image_url "share_image.png" %>" />
+    <meta property="og:type" content="website" />
+    <meta property="fb:app_id" content="111256333770354" />
+    <meta property="og:url" content="<%= request.original_url %>" />
+
+    <title>Mes Ateliers DIY</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+     <%# <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> %>
+
+    
+     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+     <%= javascript_include_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %> 
+     <%= content_for :stylesheets %>
+
+     <%= favicon_link_tag asset_path('favicon.png') %>
+    
+    <%= render 'shared/analytics' if Rails.env.production? %>
+  </head>
+
+  <body class="body <%= content_for :body_class %>">
+    <%= render 'cookies_eu/consent_banner' %>
+
+    <header class="header">
+      <div class="background-bleu">
+        <div class="section-content flex">
+          <a href="/" class="logo"><%= image_tag "logo-MADIY.svg", alt: "Mes Ateliers DIY" %></a>
+          <ul class="navigation-principale" id="navigation-principale">
+            <li class="menu-item menu-item-atelier">
+              <%= link_to "Ateliers", workshops_path %>
+            </li>
+            <li class="menu-item menu-item-kit">
+              <%= link_to "Kits DIY", kits_path %>
+            </li>
+            <li class="menu-item menu-item-apropos"><a href="/pages/a-propos">À propos</a></li>
+            <li class="menu-item menu-item-offrir"><%= link_to 'Offrir', new_voucher_path %></li>
+            <li class="menu-item menu-item-evenements"><a href="/pages/evenements">Événements</a></li>
+            <li class="menu-item menu-item-evenements"><a href="http://blog.mesateliersdiy.fr">Blog</a></li>
+
+            <% if creator_signed_in?%>
+              <li class="menu-item menu-item-ateliers-creator" style="display: none"><a href="/workshops/index_creator/<%=current_creator.id%>"%>Mes&nbsp;ateliers</a></li>
+              <li class="menu-item menu-item-compte-createur" style="display: none"><a href="/creators/edit/<%=current_creator.id%>">Mon&nbsp;profil</a></li>
+            <%end%>
+
+          </ul>
+          <ul class="navigation-pictos" id="navigation-pictos">
+            <!--<li class="menu-item item-bounce"><a href=""><%= image_tag "picto-header-recherche.svg", width: 26 %></a></li>-->
+            <li class="menu-item <%= user_signed_in? ? "has-sub-menu" : nil %>">
+              <% if user_signed_in? %>
+                <%= link_to edit_user_registration_path do %>
+                  <%= image_tag "picto-header-profil.svg", width: 38 %>
+                <% end %>
+                <ul class="sub-menu">
+                  <li>
+                    <%= link_to "Mes commandes", users_orders_path %>
+                  </li>
+
+                  <li>
+                    <%= link_to "Mon profil", edit_user_registration_path %>
+                  </li>
+
+                  <li>
+                    <%= link_to "Se déconnecter", destroy_user_session_path, method: :delete %>
+                  </li>
+                </ul>
+              <% elsif creator_signed_in?%>
+                <li class="menu-item <%= creator_signed_in? ? "has-sub-menu" : nil %>">
+              
+                  <%= link_to  do%>
+                    <%= image_tag "picto-header-profil.svg", width: 38 %>
+                  <% end%>
+                
+                  <ul class="sub-menu">
+                    <li><a href="/workshops/index_creator/<%=current_creator.id%>"%>Mes&nbsp;ateliers</a></li>
+                    <li><a href="/creators/edit/<%=current_creator.id%>">Mon&nbsp;profil</a></li>
+                    <li><%= link_to "Se déconnecter", destroy_creator_session_path, method: :delete %></li>
+                  </ul>
+                </li>
+
+              <% else %>
+                <%= link_to new_user_registration_path do %>
+                  <%= image_tag "picto-header-profil.svg", width: 38 %>
+                <% end %>
+              <% end %>
+            </li>
+            <li class="menu-item">
+              <% if @cart.cart_items.any? %>
+                <div class="item-panier">
+                  <%= @cart.cart_items.sum(:quantity) %>
+                </div>
+              <% end %>
+              <%= link_to carts_path do %>
+                <%= image_tag "picto-header-panier.svg", width: 39 %>
+              <% end %>
+            </li>
+          </ul>
+          <div class="menu-mobile-container">
+            <a href="" class="btn-menu-mobile" id="btn-menu-mobile"></a>
+            <a href="" class="btn-menu-close"></a>
+          </div>
+        </div>
+      </div>
+      <%= image_tag "header-masque.png", width: "100%", class: "masque" %>
+    </header>
+
+    <div class="pictos-mobile">
+      <%= image_tag "footer-background-min.png", width: "100%" %>
+      <ul class="navigation-pictos-mobile" id="navigation-pictos-mobile">
+        <!--<li class="menu-item item-bounce"><a href=""><%= image_tag "picto-header-recherche.svg", width: 26 %></a></li>-->
+        <li class="menu-item item-bounce">
+          <% if user_signed_in? %>
+            <%= link_to edit_user_registration_path do %>
+              <%= image_tag "picto-header-profil.svg", width: 38 %>
+            <% end %>
+          <% else %>
+            <%= link_to new_user_registration_path do %>
+              <%= image_tag "picto-header-profil.svg", width: 38 %>
+            <% end %>
+          <% end %>
+        </li>
+        <li class="menu-item item-bounce">
+          <%= link_to carts_path do %>
+            <%= image_tag "picto-header-panier.svg", width: 39 %>
+          <% end %>
+          <% if @cart.cart_items.any? %>
+            <div class="cart-item">
+              <%= @cart.cart_items.sum(:quantity) %>
+            </div>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+
+    <% if flash.any? %>
+      <div class="notifications">
+        <% flash.each do |type, message| %>
+          <p class="notification notification-<%= type %>" data-controller="discardable">
+            <%= message %>
+            <button data-action="discardable#discard" class="notification-discard btn-supp">x</button>
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= yield %>
+
+    <section class="section-newsletter section-padding">
+      <div class="section-content">
+        <h2>Newsletter</h2>
+        <h3 class="texte">Pour recevoir nos actualités, inscrivez-vous&nbsp;ici&nbsp;:</h3>
+        <%= form_with scope: :member, url: newsletter_members_path, html: { class: "form-newsletter" } do |f| %>
+          <div class="flex">
+            <%= f.email_field :email, size: 40, placeholder: 'Votre adresse mail', aria: { required: true, invalid: false } %>
+            <%= f.submit 'Inscription', class: 'btn-submit btn-newsletter', id: 'btn-newsletter' %>
+          </div>
+          <span id="newsletter-form-errors"></span>
+        <% end %>
+        <form action="" method="post" class="form-newsletter" novalidate="novalidate">
+
+        </form>
+      </div>
+    </section>
+
+    <%= image_tag "footer-background-min.png", width: "100%" %>
+    <footer>
+      <div class="section-content flex">
+        <div class="footer-bloc footer-logo"><%= image_tag "logo-MADIY.svg", width: 70 %></div>
+        <div class="footer-bloc footer-reseaux">
+          <h3>Suivez-nous</h3>
+          <ul class="liste-reseaux">
+            <li class="item-reseaux"><a href="https://www.facebook.com/mesateliersdiy.fr" target="_blank"><%= image_tag "picto-facebook.svg", width: 12 %></a></li>
+            <li class="item-reseaux"><a href="https://www.instagram.com/mesateliersdiy.fr/" target="_blank"><%= image_tag "picto-instagram.svg", width: 24 %></a></li>
+            <li class="item-reseaux"><a href="https://www.pinterest.co.uk/mesateliersDIY/_saved/" target="_blank"><%= image_tag "picto-pinterest.svg", width: 32 %></a></li>
+          </ul>
+        </div>
+        <div class="footer-bloc footer-contact">
+          <p>
+            <u><a class="mailto" href="mailto:hello@mesateliersdiy.fr">Nous écrire</a></u>
+            <br>
+            06 58 56 19 04
+          </p>
+          <a href="/pages/proposer-atelier" class="btn-cta">Proposer un atelier</a>
+        </div>
+      </div>
+      <div class="mentions-container">
+        <a href="/pages/cgv">MENTIONS LÉGALES ET CGDV</a> |
+        <a href="/pages/remerciements">REMERCIEMENTS</a>
+      </div>
+    </footer>
+  </body>
+</html>

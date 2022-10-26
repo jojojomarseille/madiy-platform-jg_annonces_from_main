@@ -1,0 +1,303 @@
+<section class="section-header-content">
+  <div class="section-content">
+	  <h1>Mon compte créateur</h1>
+  </div>
+</section>
+
+<section class="section-titre section-padding">
+  <div class="section-content">
+		<header>
+			<h4>Retrouvez ici tout l’historique de vos ateliers et gérez les informations de votre profil</h4>
+		</header>
+  </div>
+</section>
+
+<section class="section-double-bouton section-logged section-padding">
+  <div class="section-content">
+		<div class="header flex">
+	  	<div class="button-no-js button-atelier selected" data-bloc="bloc-ateliers" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mes ateliers", "/workshops/index_creator/'#{current_creator.id}'" %>
+        </h4>
+      </div>
+
+      <div class="button-no-js button-profil " data-bloc="bloc-profil" data-controller="link" data-action="click->link#onClick">
+        <h4>
+          <%= link_to "mon profil", "/creators/edit/#{current_creator.id}"%>
+        </h4>
+      </div>
+		</div>
+  </div>
+</section>
+
+<section class="section-recap-atelier section-padding" >
+  <div class="section-content">
+		<h2><%= @workshop.title%></h2>		
+  </div>
+	<div class="section-content">
+		<div class="recap flex" >
+			<div class="visuel">
+				<%= image_tag @workshop.main_picture.variant(@workshop.crop_constraints.merge(resize_to_limit: [200, 500])) if @workshop.main_picture.attached? %>
+			</div>
+			<div class="actions">
+				<div class="statut flex">
+					<div class="etat brouillon">
+						Statut: <%=@workshop.statut%>
+					</div>
+				</div>
+				<ul class=list-cta>
+					<% if @workshop.statut == "Brouillon"%>
+						<li><a href="" class="btn-cta">Publier</a></li>
+						<li><%= link_to 'Publier', "/workshops/publish/#{@workshop.id}", method: :patch, data: {confirm: 'Etes-vous sur de vouloir publier cet atelier?'}, class: "btn-cta" %></li>
+						<li><%= link_to 'Supprimer', "/workshops/#{@workshop.id}", method: :patch, data: {confirm: 'Etes-vous sur de vouloir supprimer cet atelier?'}, class: "btn-cta" %></li>
+					<%elsif @workshop.statut == "Soumis"%>
+					  <%# <%if @creator.approved? %> 
+					    <li><%= link_to 'Modifier', "/workshops/index_creator/edit/#{@workshop.id}", data: {confirm: "Attention! Si vous modifiez cet atelier, il devra de nouveau étre validé par l'admin et ne sera plus visible pour les clients pendant cet interval de temps"}, class: "btn-cta" %></li>
+						<%# <%end %> 
+
+						<%if @workshop.archivable?%>
+							<li><%= link_to 'Archiver', "/workshops/#{@workshop.id}", method: :patch, data: {confirm: "En archivant l'atelier, il n'apparaîtra plus dans votre liste d'ateliers, ni sur le site, mais peut être à tout moment désarchivé par l'administrateur à la demande"}, class: "btn-cta" %></li>
+						<%end%>
+
+					<%elsif @workshop.statut == "Validé"%>
+						<li><a href="/ateliers/<%=@workshop.id%>" class="btn-cta" target=":_blank">Voir&nbsp;la&nbsp;page </a></li>
+						<%# <%if @creator.approved? %>  
+						  <li><%= link_to 'Modifier', "/workshops/index_creator/edit/#{@workshop.id}", data: {confirm: "Attention! Si vous modifiez cet atelier, il devra de nouveau étre validé par l'admin et ne sera plus visible pour les clients pendant cet interval de temps"}, class: "btn-cta" %></li>
+						<%# <%end%>  
+						<%if @workshop.archivable?%>
+							<li><%= link_to 'Archiver', "/workshops/#{@workshop.id}", method: :patch, data: {confirm: "En archivant l'atelier, il n'apparaîtra plus dans votre liste d'ateliers, ni sur le site, mais peut être à tout moment désarchivé par l'administrateur à la demande"}, class: "btn-cta" %></li>
+						<%end%>
+					<%end%> 
+				</ul>	
+			</div>
+			<div class="stat">
+				<p>Total billets vendu</p>
+				<h3><%=@workshop.total_tickets_solds%></h3>
+			</div>
+			<div class="stat">
+				<p>Total ventes</p>
+				<h3><%= @workshop.workshop_total_sales%></h3>
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+
+<section class="section-recap-reservations section-padding">
+  <div class="section-content">
+		<h3 class="souligne droite">Réservations</h3>
+	  <div id="detail-creator-view-container" class="dates flex">
+			<div id="details-creator-view-select" class="select-container">
+		  	<div id="details-creator-view-select-container" class="select-container">
+		    	<select   id="workshop_workshop_events">
+			  		<%@workshop_events.order(start_time: :desc).each do |event| %>
+			    	<option value='<%=event.id%>' ><%= I18n.l(event.start_time, format: :event) %></option>
+			  		<%end%>	
+					</select>
+        </div>
+	    </div>
+	  <div>
+	  <button class="btn-cta details-creator-view-reconduire-btn" id="addEventBtn">Reconduire</button>
+	</div>
+
+</div>
+	
+	<div >
+	  <table id="tablereservationatelier" class="table-reservations" >
+	  	<%if @workshop.workshop_events.count > 0%>
+				<%@workshop_events.each do |event|%>
+		  		<%if event.total_sold > 0%>
+		    		<%Booking.where(["workshop_event_id = ? and active = ?", event.id, true]).each do |booking|%>
+			  			<tr class="<%=event.id%> item no-display">
+								<td class="<%=event.id%> item"><%= booking.combined_first_name%> <%=booking.combined_last_name%></td><td> </td><td class="strong billets"><%=booking.seats%></td><td class="center strong"><%=booking.total_price_cents/100%>€</td>
+			  			</tr>
+						<%end%>
+							<tr class="footer <%=event.id%> item no-display">
+								<td colspan="2" class="cta"></td>
+								<td class="inline billets">Billets vendu&nbsp;:&nbsp; <h3 ><%= event.seats_reserved %>/<%=event.total_seats%></h3></td>
+								<td class="center"><h3 class="detail-creator-total-amount"><%=event.total_sales_event_humanized%></h3></td>
+							</tr>
+							<tr>
+			  				<%if event.cancelable?%>
+								<%else%>
+									<td class="mid-width"><div> <button class="btn-cta no-display item detail-places-btn <%= event.id%>" onclick="openParticipantModal('<%= event.id%>')"  id="addParticipantBtn<%= event.id%>">Modifier le nombre de places </button></div></td>
+									<td class="detail-creator-cancel-workshop-container"><div class="detail-creator-cancel-workshop" id="detail-creator-cancel-workshop-first" ><%= link_to 'Annuler cet atelier', "#doesnotexist", data: {confirm: "Vous ne pouvez pas annuler un atelier qui possède des réservations"}, class: "btn-cta detail-workshop-cancel-btn item btnItem #{event.id}" %> </div></td>
+								<%end%>
+							</tr>
+          <%else%>
+						<tr>
+							<td class="<%=event.id%> item" ><p class="<%=event.id%> item no-resa-line">Pas de reservation pour cette date. Places disponibles: <%=event.seats_left%> </p></td>
+						</tr>
+		  		<%end%>
+
+					<%if event.cancelable?%>
+						<td class="mid-width"><div> <button class="btn-cta detail-places-btn no-display item <%= event.id%>" onclick="openParticipantModal('<%= event.id%>')" id="addParticipantBtn<%= event.id%>">Modifier le nombre de places </button></div></td>
+						<td class="detail-creator-cancel-workshop-container">
+						  <div id="detail-creator-cancel-workshop-second" class="detail-creator-cancel-workshop">
+							  <%= button_to "/events/#{event.id}", method: :patch, data: {confirm: 'Etes vous sur de vouloir annuler cet atelier?'}, class: "btn-cta detail-workshop-cancel-btn btnItem #{event.id}"  do %>
+						      Annuler cet atelier 
+						    <%end%>
+						  </div>
+						</td>
+						<%# <td style="width: 50%;"><div style="width: 90%; margin: auto; height:100%"> <%=button_to "Annuler <br/> cet <br/> atelier".html_safe, { :action => "destroy_event", method: :patch }, data: {confirm: 'Etes vous sur de vouloir annuler cet atelier?'}, class: "btn-cta btnItem #{event.id}", style: "display: none" %>
+					<%end%>
+
+					<%# la modal participants %>
+						<td>
+							<div id="participantModal<%= event.id%>" class="modal">
+								<div class="modal-content detail-workshop-modales" id="detail-workshop-modales-1" >
+									<div class="section-content">
+										<h3 class="">Modifier le nombre de places disponibles </h3>
+										<h4>Evènement  du <%= I18n.l(event.start_time, format: :event) %>, Places restantes: <%= event.seats_left %> </h3>
+										<div>
+											<%= form_with(model: event, url: "/workshop_events/#{event.id}", method: "patch") do |f| %>
+												<div class="line line-date">
+												<h4><%= f.label :seats_left, "Nouveau nombre de places disponibles : "%></h4>
+												<%= f.select :seats_left,['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '30']%>
+												<br>
+												<%= f.submit "Modifier le nombre de places disponibles" , class: "btn-cta" %>
+												<br>
+											<%end%>
+										</div>
+									</div>
+									<button class="closeBtn btn-cta detail-workshop-modal-close" onclick="closeParticipantModal('<%= event.id%>')" id="closeParticipantBtn<%= event.id%>">fermer</button>
+								</div>
+							</div>
+						</td>
+					<%# fin de la modal %>
+
+				<%end%>
+	  	<%else%>
+	    	<p> Pas de date pour cet atelier </p>
+	  	<%end%>
+	  </table>
+	</div>
+</section>
+
+ <%# la modal add events %>
+		<div id="eventsModal" class="modal">
+    	<div class="modal-content detail-workshop-modales" id="detail-workshop-modales-2">
+		    <div class="section-content">
+		      <h3 class=" ">Ajouter une date</h3>  
+			    <%= form_with model: @workshop do |form|%>
+				  	<%= form.fields_for :workshop_events, WorkshopEvent.new do |workshop_event_form|%>
+              <%= render "workshop_event_fields", f: workshop_event_form %>	
+            <%end%>
+				    <div class="detail-add-events-btn">
+						  <%= link_to_add_fields " ajouter une date supplémentaire ".html_safe, form, :workshop_events %>
+						</div>
+						<div id="add-event-modal-submit">
+				     	<%= form.submit "Reconduire" , class: "btn-cta detail-workshop-modal-submit" %>
+	          </div>			
+					<%end%>   
+		    </div>
+		    <button id="closeEventsBtn" onclick="closeEventsModal" class="closeBtn btn-cta detail-workshop-modal-close" >fermer</button>
+      </div>
+    </div>
+	<%# fin de la modal %>
+
+<script>
+var select = document.getElementById("workshop_workshop_events");
+var bookingItemArray = document.getElementsByClassName("item");
+var bookingButtonsArray = document.getElementsByClassName("btnItem");
+
+select.addEventListener("change", () => {
+	const bookingFilter = (value) => {
+  Array.from(bookingItemArray).forEach(function (element){
+	  if (element.classList.contains(value)) {
+		  element.style['display'] = 'table-row';
+	  } else {
+		  element.style['display'] = 'none';
+	  }
+  });
+  Array.from(bookingButtonsArray).forEach(function (elementBtn){
+	  if (elementBtn.classList.contains(value)) {
+		  elementBtn.style['display'] = 'inline';
+	  } else {
+		  elementBtn.style['display'] = 'none';
+	  }
+  })
+}
+  bookingFilter(select.value);
+}
+);
+
+$(document).ready(function () {
+  const bookingFilter = (value) => {
+  Array.from(bookingItemArray).forEach(function (element){
+	  if (element.classList.contains(value)) {
+		  element.style['display'] = 'table-row';
+	  } else {
+		  element.style['display'] = 'none';
+	  }
+  });
+  Array.from(bookingButtonsArray).forEach(function (elementBtn){
+	  if (elementBtn.classList.contains(value)) {
+		  elementBtn.style['display'] = 'inline';
+	  } else {
+		  elementBtn.style['display'] = 'none';
+	  }
+  })
+}
+bookingFilter(select.value);
+});
+
+
+// Partie modales:
+//le js de la modale
+// on récupere la modale
+var eventsModal = document.getElementById('eventsModal');
+//on recupere les boutons d'appel
+var eventsModalBtn = document.getElementById('addEventBtn');
+//on recupere le bouton de fermeture de chaque modale
+var closeEventsBtn = document.getElementById('closeEventsBtn');
+// on ecoute le click
+eventsModalBtn.addEventListener('click', openEventsModal);
+//on ecoute le clic sur le bouton fermer la modal
+closeEventsBtn.addEventListener('click',closeEventsModal);
+// on ecoute le clic en dehors de la modal
+window.addEventListener('click', outsideClick2);
+// window.addEventListener('click', outsideClick3);
+
+//la fonction qui ouvre la modal:
+function openEventsModal(){
+  eventsModal.style.display = 'block';
+}
+
+//la fonction qui ferme la modale:
+function closeEventsModal(){
+  eventsModal.style.display = 'none';
+}
+// la fonction qui ferme la modale si on clic en dehors:
+function outsideClick2(e){
+  if(e.target == eventsModal){
+  eventsModal.style.display = 'none';
+  }
+}
+
+// Modale multiple
+// Les modales de modification du nombre de place par atelier (il y en a une par date d'atelier à générer)
+// on crée un tableau js avec tous les id des events
+var eventsId = <%=raw @events_id_array%>;
+
+function openParticipantModal(value){
+  document.getElementById('participantModal' + value).style.display = 'block';
+}
+
+function closeParticipantModal(value) {
+  document.getElementById('participantModal' + value).style.display = 'none';
+}
+//pour chaque atelier, on crée les variables et les fonctions d'ecoutes
+eventsId.forEach(participantsModalesVariables);
+
+//on crée le jeux de variables personnalisées pour un events et on écoute
+function participantsModalesVariables(value) {
+  window['participantModal'+ value] = document.getElementById('participantModal'+value);
+  window['participantModalBtn'+ value] = document.getElementById('addParticipantBtn'+value);
+//   window['participantModalBtn'+ value].addEventListener('click', openParticipantModal(value));
+  
+  window['closeParticipantBtn'+ value] = document.getElementById('closeParticipantBtn'+value);
+  window['closeParticipantBtn'+ value].addEventListener('click', closeParticipantModal(value));
+}
+
+</script>

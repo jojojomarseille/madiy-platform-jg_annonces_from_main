@@ -1,0 +1,37 @@
+<%= form_with scope: :payment,
+  url: nil,
+  class: "form-facturation form-DIY",
+  data: {
+    controller: 'mango',
+    mango_access_key: @card_registration["AccessKey"],
+    mango_url: @card_registration["CardRegistrationURL"],
+    mango_api_url: payments_path,
+    mango_preregistration_data: @card_registration["PreregistrationData"],
+    mango_id: @card_registration["Id"],
+    mango_client_id: ENV.fetch("MANGOPAY_CLIENT_ID", Rails.application.credentials.mangopay[:client_id]),
+    mango_card_registration_base_url: ENV.fetch("MANGOPAY_CARD_REGISTRATION_BASE_URL", Rails.application.credentials.mangopay[:card_registration_base_url]),
+    action: 'ajax:beforeSend->mango#submitCardRegistration',
+  } do |f| %>
+  <div id="card-inputs">
+    <h3 class="souligne">Informations de carte</h3>
+    <div class="line">
+      <%= f.label :card_number, "Numéro de carte" %>
+      <%= f.text_field :card_number %>
+    </div>
+
+    <div class="line">
+      <%= f.label :cvc, "Cryptogramme visuel" %>
+      <%= f.text_field :cvc %>
+    </div>
+
+    <div class="line">
+      <%= f.label :expiration, "Date d'expiration" %>
+      <%= f.date_select :expiration, discard_day: true %>
+    </div>
+  </div>
+
+  <div class="bloc-cta">
+    <p class="messageErreur" id="messageErreur"></p>
+    <%= f.submit "Payer #{short_number_to_currency(Money.new(@cart.amount_cents))}", class: "btn-cta btn-paye" %>
+  </div>
+<% end %>
